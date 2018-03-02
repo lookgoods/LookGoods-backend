@@ -5,7 +5,7 @@ const UserSchema = new Schema({
     email: {type: String, required: true},
     password: {type: String, required: true},
     name: String,
-    picture_url: String,
+    picture_profile_url: String,
     number_of_posts: {type: Number,default: 0},
     number_of_reviews: {type: Number,default: 0},
     number_of_follower: {type: Number,default: 0},

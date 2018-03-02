@@ -2,10 +2,13 @@ import Mongoose, { Schema } from 'mongoose'
 
 const ReviewSchema = new Schema({
     id_review: Schema.Types.ObjectId,
-    id_reviewer: String,
-    id_post: String,
-    description: String,
-    rating_by_reviewer: Number
+    id_user: String,
+    picture_cover_url: String,
+    content_list: [],
+    product_id: String,
+    comment_list: [],
+    like_by_list: [],
+    rating: number
 
 })
 
