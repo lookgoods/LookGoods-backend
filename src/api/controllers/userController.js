@@ -2,7 +2,7 @@ import Mongoose from 'mongoose'
 import User from '../models/userModel'
 
 export default {
-    listAllUsers: (req, res) => 
+    getUserList: (req, res) => 
     User.find({},(err, user) => {
         if (err) res.send(err)
         res.json(user)

@@ -1,9 +1,11 @@
 import Mongoose, { Schema } from 'mongoose'
 
 const CommentSchema = new Schema({
-    id_comment: Schema.Types.ObjectId,
+    comment_id: Schema.Types.ObjectId,
     description: String,
-    rating: number
+    rating: Number,
+    user_id: String, 
+    timestamp: { type: Date, default: Date.now }
 
 })
 

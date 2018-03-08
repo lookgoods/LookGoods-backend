@@ -1,14 +1,15 @@
 import Mongoose, { Schema } from 'mongoose'
 
 const ReviewSchema = new Schema({
-    id_review: Schema.Types.ObjectId,
-    id_user: String,
+    review_id: Schema.Types.ObjectId,
+    user: { type: Schema.Types.ObjectId, ref: 'User' },
     picture_cover_url: String,
     content_list: [],
-    product_id: String,
+    product_id: { type: Schema.Types.ObjectId, ref: 'Product' },
     comment_list: [],
     like_by_list: [],
-    rating: number
+    rating: Number,
+    timestamp: { type: Date, default: Date.now }
 
 })
 

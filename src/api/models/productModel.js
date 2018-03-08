@@ -1,9 +1,9 @@
 import Mongoose, { Schema } from 'mongoose'
 
 const ProductSchema = new Schema({
-    id_product: Schema.Types.ObjectId,
+    product_id: Schema.Types.ObjectId,
     name: String,
-    price: String,
+    price: Number,
     tag: [],
     brand: String
 
