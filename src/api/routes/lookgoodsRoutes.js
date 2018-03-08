@@ -7,6 +7,9 @@ export default app => {
     .post(UserController.createUser)
 
     app.route('/reviews')
+    .get(ReviewController.getReviewList)
+    .post(ReviewController.createReview)
+
+    app.route('/products')
     .get(ReviewController.getProductList)
-    .post(ReviewController.createProduct)
 }

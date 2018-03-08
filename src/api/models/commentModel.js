@@ -1,7 +1,6 @@
 import Mongoose, { Schema } from 'mongoose'
 
 const CommentSchema = new Schema({
-    comment_id: Schema.Types.ObjectId,
     description: String,
     rating: Number,
     user_id: String, 
