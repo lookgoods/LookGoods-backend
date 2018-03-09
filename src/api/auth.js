@@ -1,7 +1,7 @@
 import FacebookTokenStrategy from 'passport-facebook-token'
 import Passport from 'passport'
 
-passport.use(new FacebookTokenStrategy({
+Passport.use(new FacebookTokenStrategy({
     clientID: FACEBOOK_APP_ID,
     clientSecret: FACEBOOK_APP_SECRET
   }, function(accessToken, refreshToken, profile, done) {
