@@ -2,6 +2,15 @@ import UserController from '../controllers/userController'
 import ReviewController from '../controllers/reviewController'
 
 export default app => {
+
+    app.post('/auth/facebook/token',
+        passport.authenticate('facebook-token'),
+        function (req, res) {
+            // do something with req.user
+            res.send(req.user? 200 : 401);
+        }
+    );
+
     app.route('/users')
     .get(UserController.getUserList)
     .post(UserController.createUser)
