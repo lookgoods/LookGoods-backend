@@ -1,10 +1,11 @@
 import UserController from '../controllers/userController'
 import ReviewController from '../controllers/reviewController'
+import Passport from '../auth'
 
 export default app => {
 
     app.post('/auth/facebook/token',
-        passport.authenticate('facebook-token'),
+        Passport.authenticate('facebook-token'),
         function (req, res) {
             // do something with req.user
             res.send(req.user? 200 : 401);
