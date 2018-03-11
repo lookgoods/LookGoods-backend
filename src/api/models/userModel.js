@@ -1,7 +1,9 @@
 import Mongoose, { Schema } from 'mongoose'
 
 const UserSchema = new Schema({
-    access_token: String,
+    client_id: String,
+    name: String,
+    picture_url: String,
     follower_list: [],
     following_list: [],
     saved_post_list: [],

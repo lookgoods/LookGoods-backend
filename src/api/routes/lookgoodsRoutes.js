@@ -1,6 +1,6 @@
 import UserController from '../controllers/userController'
 import ReviewController from '../controllers/reviewController'
-import Passport from '../auth'
+import Passport from '../models/auth'
 
 export default app => {
 
@@ -8,9 +8,10 @@ export default app => {
         Passport.authenticate('facebook-token'),
         function (req, res) {
             // do something with req.user
+            UserController.findOrCreateUser
             res.send(req.user? 200 : 401);
         }
-    );
+    )
 
     app.route('/users')
     .get(UserController.getUserList)
