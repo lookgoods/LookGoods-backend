@@ -9,7 +9,6 @@ const UserSchema = new Schema({
     saved_post_list: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
     own_post_list: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
     description: String
-
 })
 
 export default Mongoose.model('User', UserSchema);

@@ -1,10 +1,13 @@
 import FacebookTokenStrategy from 'passport-facebook-token'
 import Passport from 'passport'
 import User from './userModel'
+import DotEnv from 'dotenv'
+
+DotEnv.config()
 
 Passport.use(new FacebookTokenStrategy({
-    clientID: "1447759218667981",
-    clientSecret: "1eef39fbe6f9ff8463ea3f7a40696611"
+    clientID: process.env.FB_CLIENT_ID,
+    clientSecret: process.env.FB_SECRET_ID
   }, (accessToken, refreshToken, profile, done) => {
     User.find({client_id: profile.id}, (err, res) => {
       if (res.length==0) {
