@@ -8,7 +8,6 @@ export default app => {
         Passport.authenticate('facebook-token'),
         function (req, res) {
             // do something with req.user
-            UserController.findOrCreateUser
             res.send(req.user? 200 : 401);
         }
     )
