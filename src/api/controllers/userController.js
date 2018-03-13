@@ -13,7 +13,13 @@ export default {
           if (err) res.send(err)
           res.json(user)
         })
-    }
+    },
+
+    getUserInfo: (req, res) => User.find({_id:req.params.id}, (err, user) => {
+        if (err) res.send(err)
+        console.log(res)
+        res.json(user)
+    })
 
     
     

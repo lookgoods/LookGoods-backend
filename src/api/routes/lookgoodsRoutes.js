@@ -16,10 +16,17 @@ export default app => {
     .get(UserController.getUserList)
     .post(UserController.createUser)
 
+    app.route('/users/:id')
+    .get(UserController.getUserInfo)
+    
+
+    app.route('/user/:id/reviews')    
+
     app.route('/reviews')
     .get(ReviewController.getReviewList)
     .post(ReviewController.createReview)
 
-    app.route('/products')
-    .get(ReviewController.getProductList)
+
+    // app.route('/products')
+    // .get(ReviewController.getProductList)
 }

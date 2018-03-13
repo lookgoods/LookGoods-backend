@@ -1,20 +1,21 @@
 import Mongoose from 'mongoose'
 import Review from '../models/reviewModel'
 import Product from '../models/productModel'
+import User from '../models/userModel'
 
 export default {
-    createProduct: (req, res) => {
-        const newProduct = new Product(req.body)
-        newProduct.save((err, product) => {
-            if (err) res.send(err)
-            res.json(product)
-        })
-    },
+    // createProduct: (req, res) => {
+    //     const newProduct = new Product(req.body)
+    //     newProduct.save((err, product) => {
+    //         if (err) res.send(err)
+    //         res.json(product)
+    //     })
+    // },
     
-    getProductList: (req, res) => Product.find({}, (err,productList) => {
-        if (err) res.send(err)
-        res.json(productList)
-    }),
+    // getProductList: (req, res) => Product.find({}, (err,productList) => {
+    //     if (err) res.send(err)
+    //     res.json(productList)
+    // }),
 
     getReviewList: (req, res) => Review.find({}, (err,reviewList) => {
         if (err) res.send(err)
@@ -32,6 +33,7 @@ export default {
         newProduct.save((err, product) => {
             if (err) res.send(err)
             const reviewInfo = {
+                user: req.body.user,
                 title: req.body.title,
                 picture_cover_url: req.body.picture_cover_url,
                 content_list: req.body.content_list,
