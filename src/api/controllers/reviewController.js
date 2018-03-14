@@ -1,7 +1,6 @@
 import Mongoose from 'mongoose'
 import Review from '../models/reviewModel'
 import Product from '../models/productModel'
-import User from '../models/userModel'
 
 export default {
     // createProduct: (req, res) => {

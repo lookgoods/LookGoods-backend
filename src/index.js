@@ -1,5 +1,7 @@
 import BodyParser from 'body-parser'
 import Express from 'express'
+import Session from 'express-session'
+import ConnectMongo from 'connect-mongo'
 import Mongoose from 'mongoose'
 import Routes from './api/routes/lookgoodsRoutes'
 import Auth from './api/models/auth'
@@ -15,6 +17,15 @@ app.use(Auth.session())
 // mongoose instance connection url connection
 Mongoose.Promise = global.Promise
 Mongoose.connect(MONGO_URI)
+
+const MongoStore = ConnectMongo(Session)
+app.use(Session({
+    key: 'session',
+    secret: 'SUPER SECRET SECRET',
+    store: new MongoStore({
+        url: MONGO_URI
+    })
+}))
 
 app.use(BodyParser.urlencoded({ extended: true }))
 app.use(BodyParser.json())

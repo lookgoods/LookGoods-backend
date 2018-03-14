@@ -19,8 +19,7 @@ export default app => {
     app.route('/users/:id')
     .get(UserController.getUserInfo)
     
-
-    app.route('/user/:id/reviews')    
+  
 
     app.route('/reviews')
     .get(ReviewController.getReviewList)

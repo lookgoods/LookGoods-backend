@@ -1,6 +1,6 @@
 import FacebookTokenStrategy from 'passport-facebook-token'
 import Passport from 'passport'
-import User from '../models/userModel'
+import User from './userModel'
 
 Passport.use(new FacebookTokenStrategy({
     clientID: "1447759218667981",
@@ -26,7 +26,7 @@ Passport.use(new FacebookTokenStrategy({
           else done(null, profile) 
         })
       }
-    })    
+    })   
   }
 ))
 
