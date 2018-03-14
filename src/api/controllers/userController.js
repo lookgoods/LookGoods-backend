@@ -17,6 +17,7 @@ export default {
 
     getUserInfo: (req, res) => User.find({_id:req.params.id}, (err, user) => {
         if (err) res.send(err)
+        console.log(req.session)
         res.json(user)
     })
 

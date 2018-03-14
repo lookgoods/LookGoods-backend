@@ -32,7 +32,7 @@ export default {
         newProduct.save((err, product) => {
             if (err) res.send(err)
             const reviewInfo = {
-                user: req.body.user,
+                user: req.session.user_id,
                 title: req.body.title,
                 picture_cover_url: req.body.picture_cover_url,
                 content_list: req.body.content_list,
