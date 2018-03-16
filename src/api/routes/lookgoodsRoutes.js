@@ -25,6 +25,9 @@ export default app => {
     app.route('/users/:id')
     .get(UserController.getUserInfo)
     
+    app.route('/users/:id/reviews')
+    .get(ReviewController.getUserReviews)
+
     app.route('/currentuser')
     .get(UserController.getCurrentUser)
     

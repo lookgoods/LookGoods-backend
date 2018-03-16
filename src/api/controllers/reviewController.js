@@ -17,7 +17,12 @@ export default {
     //     res.json(productList)
     // }),
 
-    getReviewList: (req, res) => Review.find({}, (err,reviewList) => {
+    getReviewList: (req, res) => Review.find({}, (err, reviewList) => {
+        if (err) res.send(err)
+        res.json(reviewList)
+    }),
+    
+    getUserReviews: (req, res) => Review.find({user:req.params.id}, (err, reviewList) =>{
         if (err) res.send(err)
         res.json(reviewList)
     }),
