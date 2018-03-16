@@ -17,8 +17,12 @@ export default {
 
     getUserInfo: (req, res) => User.find({_id:req.params.id}, (err, user) => {
         if (err) res.send(err)
-        console.log(req.session)
         res.json(user)
+    }),
+
+    getCurrentUser: (req, res) => User.find({_id:req.session.user_id}, (err,currentUser) =>{
+        if (err) res.send(err)
+        res.json(currentUser)
     })
 
     
