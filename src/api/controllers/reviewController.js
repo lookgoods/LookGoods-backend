@@ -1,6 +1,7 @@
 import Mongoose from 'mongoose'
 import Review from '../models/reviewModel'
 import Product from '../models/productModel'
+import User from '../models/userModel'
 
 export default {
     // createProduct: (req, res) => {
@@ -44,7 +45,13 @@ export default {
             const newReview = new Review(reviewInfo)
             newReview.save((err, review) => {
                 if (err) res.send(err)
-                res.json(review)
+                console.log(review)
+                User.update({_id:req.session.user_id},{
+                    $push: {own_post_list: review._id}
+                }, (err, updated) => {
+                    if (err) res.send(err)
+                    res.json(updated)
+                })
             })
         })
         
