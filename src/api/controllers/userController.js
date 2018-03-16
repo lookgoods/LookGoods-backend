@@ -20,6 +20,13 @@ export default {
         res.json(user)
     }),
 
+    changeUserInfo: (req, res) => User.update({_id:req.session.user_id}, {
+        description: req.body.description
+    }, (err, user) => {
+        if (err) res.send(err)
+        res.send(user)
+    }),
+
     getCurrentUser: (req, res) => User.find({_id:req.session.user_id}, (err,currentUser) =>{
         if (err) res.send(err)
         res.json(currentUser)

@@ -20,10 +20,11 @@ export default app => {
     app.route('/users')
     .get(UserController.getUserList)
     .post(UserController.createUser)
+    .put(UserController.changeUserInfo)
 
     app.route('/users/:id')
     .get(UserController.getUserInfo)
-
+    
     app.route('/currentuser')
     .get(UserController.getCurrentUser)
     
