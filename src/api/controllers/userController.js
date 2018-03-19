@@ -30,6 +30,18 @@ export default {
     getCurrentUser: (req, res) => User.find({_id:req.session.user_id}, (err,currentUser) =>{
         if (err) res.send(err)
         res.json(currentUser)
+    }),
+
+    followUser: (req, res) => User.update({_id:req.params.id}, {
+        $push: {follower_list: req.session.user_id}
+    }, (err, updateFollower) => {
+        if (err) res.send(err)
+        User.update({_id:req.session.user_id}, {
+            $push: {following_list: req.params.id}
+        }, (err, updateCurrentUser) => {
+            if (err) res.send(err)
+            res.send(updateCurrentUser)
+        })
     })
 
     
