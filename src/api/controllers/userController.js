@@ -32,6 +32,17 @@ export default {
         res.json(currentUser)
     }),
 
+    getFollower: (req, res) => User.find({_id:req.params.id} ,(err, user) => {
+        if (err) res.send(err)
+        console.log(user[0].follower_list)
+        res.json(user[0].follower_list)
+    }),
+
+    getFollowing: (req, res) => User.find({_id:req.params.id} ,(err, user) => {
+        if (err) res.send(err)
+        res.json(user[0].following_list)
+    }),
+
     followUser: (req, res) => User.find({_id:req.session.user_id, following_list:req.params.id}, (err,currentUser) => {
         if (err) res.send(err)
         if (currentUser.length == 0){

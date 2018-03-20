@@ -28,6 +28,12 @@ export default app => {
     app.route('/users/:id/follow')
     .put(UserController.followUser)
 
+    app.route('/users/:id/follower')
+    .get(UserController.getFollower)
+
+    app.route('/users/:id/following')
+    .get(UserController.getFollowing)
+
     app.route('/users/:id/unfollow')
     .put(UserController.unfollowUser)
     
