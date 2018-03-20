@@ -49,7 +49,25 @@ export default {
         }else{
             res.json(currentUser)
         }
-        
+    }),
+
+    unfollowUser: (req, res) => User.find({_id:req.session.user_id, following_list:req.params.id}, (err,currentUser) => {
+        if (err) res.send(err)
+        if (currentUser.length == 0){
+            res.json(currentUser)
+        }else{
+            User.update({_id:req.params.id}, {
+                $pull: {follower_list: req.session.user_id}
+            }, (err, updateFollower) => {
+                if (err) res.send(err)
+                User.update({_id:req.session.user_id}, {
+                    $pull: {following_list: req.params.id}
+                }, (err, updateFollowing) => {
+                    if (err) res.sond(err)
+                    res.send(updateFollowing)
+                })
+            })
+        }
     })
     
     

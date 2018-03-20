@@ -27,6 +27,9 @@ export default app => {
 
     app.route('/users/:id/follow')
     .put(UserController.followUser)
+
+    app.route('/users/:id/unfollow')
+    .put(UserController.unfollowUser)
     
     app.route('/users/:id/reviews')
     .get(ReviewController.getUserReviews)
