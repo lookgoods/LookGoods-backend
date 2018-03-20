@@ -27,16 +27,41 @@ export default {
         res.json(reviewList)
     }),
 
-    createReview: (req, res) => {
-        const productInfo = {
-            name: req.body.name,
-            price: req.body.price,
-            tag: req.body.tag,
-            brand: req.body.brand
-        }
-        const newProduct = new Product(productInfo)
-        newProduct.save((err, product) => {
-            if (err) res.send(err)
+    createReview: (req, res) => Product.find({name:req.body.name}, (err, product) => {
+        if (err) res.send(err)
+        if (product.length == 0){
+            const productInfo = {
+                name: req.body.name,
+                price: req.body.price,
+                tag: req.body.tag,
+                brand: req.body.brand
+            }
+            const newProduct = new Product(productInfo)
+            newProduct.save((err, product) => {
+                if (err) res.send(err)
+                const reviewInfo = {
+                    user: req.session.user_id,
+                    title: req.body.title,
+                    picture_cover_url: req.body.picture_cover_url,
+                    content_list: req.body.content_list,
+                    product_id: product._id,
+                    comment_list: req.body.comment_list,
+                    like_by_list: req.body.like_by_list,
+                    rating: req.body.rating
+                }
+                const newReview = new Review(reviewInfo)
+                newReview.save((err, review) => {
+                    if (err) res.send(err)
+                    console.log(review)
+                    User.update({_id:req.session.user_id},{
+                        $push: {own_post_list: review._id}
+                    }, (err, updated) => {
+                        if (err) res.send(err)
+                        res.json(updated)
+                    })
+                })
+            })
+        }else{
             const reviewInfo = {
                 user: req.session.user_id,
                 title: req.body.title,
@@ -58,7 +83,8 @@ export default {
                     res.json(updated)
                 })
             })
+        }
+            
         })
-        
-    }
+
 }
