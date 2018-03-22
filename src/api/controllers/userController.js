@@ -17,7 +17,7 @@ export default {
 
     getUserInfo: (req, res) => User.find({_id:req.params.id}, (err, user) => {
         if (err) res.send(err)
-        res.json(user)
+        res.json(user[0])
     }),
 
     changeUserInfo: (req, res) => User.update({_id:req.session.user_id}, {
@@ -29,7 +29,7 @@ export default {
 
     getCurrentUser: (req, res) => User.find({_id:req.session.user_id}, (err,currentUser) =>{
         if (err) res.send(err)
-        res.json(currentUser)
+        res.json(currentUser[0])
     }),
 
     getFollower: (req, res) => User.find({_id:req.params.id} ,(err, user) => {
