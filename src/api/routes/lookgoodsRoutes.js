@@ -1,5 +1,6 @@
 import UserController from '../controllers/userController'
 import ReviewController from '../controllers/reviewController'
+import CommentController from '../controllers/commentController'
 import Passport from '../models/auth'
 import User from '../models/userModel'
 
@@ -48,6 +49,8 @@ export default app => {
     .get(ReviewController.getReviewList)
     .post(ReviewController.createReview)
 
+    app.route('/reviews/:id')
+    .post(CommentController.createComment)
 
     // app.route('/products')
     // .get(ReviewController.getProductList)
