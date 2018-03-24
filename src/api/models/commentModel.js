@@ -3,7 +3,7 @@ import Mongoose, { Schema } from 'mongoose'
 const CommentSchema = new Schema({
     description: String,
     rating: Number,
-    user_id: String, 
+    user: { type: Schema.Types.ObjectId, ref: 'User' }, 
     timestamp: { type: Date, default: Date.now }
 
 })

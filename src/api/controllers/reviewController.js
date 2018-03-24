@@ -87,9 +87,30 @@ export default {
             
     }),
 
-    deleteReview: (req, res) => Review.remove({_id:req.params.id} ,(err ,removed) => {
+    deleteReview: (req, res) => Review.remove({
+        _id:req.params.id,
+        user:req.session.user_id
+    }, (err ,review) => {
         if (err) res.send(err)
-        res.send(removed)
+        console.log(review)
+        if (review.length == 0){
+            res.send(review)
+        }else{
+            User.update({_id:req.session.user_id}, {
+                $pull : { own_post_list:req.params.id }
+            }, (err, updated) =>{
+                if (err) res.send(err)
+                
+                res.send(updated)
+            })
+        }
     })
+    
+    
+    // Review.remove({_id:req.params.id} ,(err ,removed) => {
+    //     if (err) res.send(err)
+    //     console.log(removed)
+    //     res.send(removed)
+    // })
 
 }

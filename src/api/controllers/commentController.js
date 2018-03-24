@@ -5,7 +5,7 @@ import Comment from '../models/commentModel'
 export default {
     createComment: (req, res) => {
         const commentInfo = {
-            user_id: req.session.user_id,
+            user: req.session.user_id,
             description: req.body.description,
             rating: req.body.rating
         }

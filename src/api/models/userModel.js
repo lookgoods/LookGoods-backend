@@ -4,10 +4,10 @@ const UserSchema = new Schema({
     client_id: String,
     name: String,
     picture_url: String,
-    follower_list: [],
-    following_list: [],
-    saved_post_list: [],
-    own_post_list: [],
+    follower_list: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    following_list: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    saved_post_list: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
+    own_post_list: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
     description: String
 
 })
