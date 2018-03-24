@@ -52,6 +52,7 @@ export default app => {
     app.route('/reviews/:id')
     .post(CommentController.createComment)
     .get(CommentController.getCommentList)
+    .delete(ReviewController.deleteReview)
 
     // app.route('/products')
     // .get(ReviewController.getProductList)

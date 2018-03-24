@@ -85,6 +85,11 @@ export default {
             })
         }
             
-        })
+    }),
+
+    deleteReview: (req, res) => Review.remove({_id:req.params.id} ,(err ,removed) => {
+        if (err) res.send(err)
+        res.send(removed)
+    })
 
 }
