@@ -19,7 +19,12 @@ export default {
                 res.send(updatedComment)
             })
         })
-    }
+    },
+
+    getCommentList: (req, res) => Review.find({_id:req.params.id}, (err, review) => {
+        if (err) res.send(err)
+        res.json(review[0].comment_list)
+    })
     
     
 }
