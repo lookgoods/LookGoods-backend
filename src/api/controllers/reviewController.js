@@ -4,18 +4,6 @@ import Product from '../models/productModel'
 import User from '../models/userModel'
 
 export default {
-    // createProduct: (req, res) => {
-    //     const newProduct = new Product(req.body)
-    //     newProduct.save((err, product) => {
-    //         if (err) res.send(err)
-    //         res.json(product)
-    //     })
-    // },
-    
-    // getProductList: (req, res) => Product.find({}, (err,productList) => {
-    //     if (err) res.send(err)
-    //     res.json(productList)
-    // }),
 
     getReviewList: (req, res) => Review.find({}, (err, reviewList) => {
         if (err) res.send(err)
@@ -106,11 +94,4 @@ export default {
         }
     })
     
-    
-    // Review.remove({_id:req.params.id} ,(err ,removed) => {
-    //     if (err) res.send(err)
-    //     console.log(removed)
-    //     res.send(removed)
-    // })
-
 }

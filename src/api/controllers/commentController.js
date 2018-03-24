@@ -36,7 +36,6 @@ export default {
 
     deleteComment: (req, res) => Comment.find({_id:req.params.cid,user:req.session.user_id}, (err, comment) => {
         if (err) res.send(err)
-        console.log(comment)
         if (comment.length == 0){
             res.send(comment)
         }else{
@@ -44,8 +43,10 @@ export default {
                 $pull: { comment_list: req.params.cid}
             }, (err, updated) => {
                 if (err) res.send(err)
-
-                res.send(updated)
+                Comment.remove({_id:req.params.cid}, (err, updated) =>{
+                    if (err) res.send(err)
+                    res.send(updated)
+                })
             })
         }
     })

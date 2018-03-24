@@ -34,7 +34,6 @@ export default {
 
     getFollower: (req, res) => User.find({_id:req.params.id} ,(err, user) => {
         if (err) res.send(err)
-        console.log(user[0].follower_list)
         res.json(user[0].follower_list)
     }),
 

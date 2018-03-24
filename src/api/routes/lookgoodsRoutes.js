@@ -59,6 +59,4 @@ export default app => {
     .delete(CommentController.deleteComment)
 
 
-    // app.route('/products')
-    // .get(ReviewController.getProductList)
 }
