@@ -1,8 +1,8 @@
-import UserController from '../controllers/userController'
-import ReviewController from '../controllers/reviewController'
 import CommentController from '../controllers/commentController'
 import Passport from '../models/auth'
+import ReviewController from '../controllers/reviewController'
 import User from '../models/userModel'
+import UserController from '../controllers/userController'
 
 export default app => {
 
@@ -21,10 +21,10 @@ export default app => {
     app.route('/users')
     .get(UserController.getUserList)
     .post(UserController.createUser)
-    .put(UserController.changeUserInfo)
 
     app.route('/users/:id')
     .get(UserController.getUserInfo)
+    .put(UserController.changeUserInfo)
 
     app.route('/users/:id/follow')
     .put(UserController.followUser)
