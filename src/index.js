@@ -5,9 +5,14 @@ import ConnectMongo from 'connect-mongo'
 import Mongoose from 'mongoose'
 import Routes from './api/routes/lookgoodsRoutes'
 import Auth from './api/models/auth'
+import DotEnv from 'dotenv'
+
+DotEnv.config()
 
 const port = process.env.PORT || 3000
-const MONGO_URI = 'mongodb://localhost/LookGoodsDB'
+const usernameDB = process.env.DATABASE_USERNAME
+const passwordDB = process.env.DATABASE_PASSWORD
+const MONGO_URI = `mongodb://${usernameDB}:${passwordDB}@localhost/LookGoodsDB`
 
 const app = Express()
 
