@@ -20,7 +20,6 @@ export default {
         if (product.length == 0){
             const productInfo = {
                 name: req.body.name,
-                price: req.body.price,
                 tag: req.body.tag,
                 brand: req.body.brand
             }
@@ -33,6 +32,7 @@ export default {
                     picture_cover_url: req.body.picture_cover_url,
                     content_list: req.body.content_list,
                     product_id: product._id,
+                    price: req.body.price,
                     comment_list: req.body.comment_list,
                     like_by_list: req.body.like_by_list,
                     rating: req.body.rating
