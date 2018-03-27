@@ -12,7 +12,8 @@ DotEnv.config()
 const port = process.env.PORT || 3000
 const usernameDB = process.env.DATABASE_USERNAME
 const passwordDB = process.env.DATABASE_PASSWORD
-const MONGO_URI = `mongodb://${usernameDB}:${passwordDB}@localhost/LookGoodsDB`
+
+const MONGO_URI = `mongodb://${usernameDB}:${passwordDB}@localhost/LookGoodsDB?authSource=admin`
 
 const app = Express()
 
