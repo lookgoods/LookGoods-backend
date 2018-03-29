@@ -34,12 +34,18 @@ export default {
 
     getFollower: (req, res) => User.find({_id:req.params.id} ,(err, user) => {
         if (err) res.send(err)
-        res.json(user[0].follower_list)
+        User.find({_id:{ $in: user[0].follower_list}}, (err, user_list) => {
+            if (err) res.send(err)
+            res.json(user_list)
+        })
     }),
 
     getFollowing: (req, res) => User.find({_id:req.params.id} ,(err, user) => {
         if (err) res.send(err)
-        res.json(user[0].following_list)
+        User.find({_id:{ $in: user[0].following_list}}, (err, user_list) => {
+            if (err) res.send(err)
+            res.json(user_list)
+        })
     }),
 
     followUser: (req, res) => User.find({_id:req.session.user_id, following_list:req.params.id}, (err,currentUser) => {
