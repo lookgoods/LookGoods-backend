@@ -25,7 +25,6 @@ export default {
 
     createReview: (req, res) => Product.find({name:req.body.name}, (err, product) => {
         if (err) res.send(err)
-        console.log(product)
         if (product.length == 0){
             const productInfo = {
                 name: req.body.name,
@@ -45,7 +44,7 @@ export default {
                     comment_list: req.body.comment_list,
                     like_by_list: req.body.like_by_list,
                     rating: req.body.rating,
-                    available: req.body.available
+                    available: 1
                 }
                 const newReview = new Review(reviewInfo)
                 newReview.save((err, review) => {
@@ -68,7 +67,7 @@ export default {
                 comment_list: req.body.comment_list,
                 like_by_list: req.body.like_by_list,
                 rating: req.body.rating,
-                available: req.body.available
+                available: 1
             }
             const newReview = new Review(reviewInfo)
             newReview.save((err, review) => {
@@ -99,6 +98,53 @@ export default {
             }, (err, updated) =>{
                 if (err) res.send(err)
                 res.send(updated)
+            })
+        }
+    }),
+
+    editReview: (req, res) => Product.find({name:req.body.name}, (err, product) => {
+        if (err) res.send(err)
+        if (product.length == 0){
+            const productInfo = {
+                name: req.body.name,
+                tag: req.body.tag,
+                brand: req.body.brand
+            }
+            const newProduct = new Product(productInfo)
+            newProduct.save((err, product) => {
+                if (err) res.send(err)
+                Review.update({
+                    _id: req.params.id,
+                    user: req.session.user_id
+                }, {
+                    title: req.body.title,
+                    picture_cover_url: req.body.picture_cover_url,
+                    content_list: req.body.content_list,
+                    product_id: product._id,
+                    price: req.body.price,
+                    rating: req.body.rating,
+                    available: 1
+                }, (err, updated) => {
+                    if (err) res.send(err)
+                    res.json(updated)
+                })
+                
+            })
+        }else{
+            Review.update({
+                _id: req.params.id,
+                user: req.session.user_id
+            }, {
+                title: req.body.title,
+                picture_cover_url: req.body.picture_cover_url,
+                content_list: req.body.content_list,
+                product_id: product._id,
+                price: req.body.price,
+                rating: req.body.rating,
+                available: 1
+            }, (err, updated) => {
+                if (err) res.send(err)
+                res.json(updated)
             })
         }
     })

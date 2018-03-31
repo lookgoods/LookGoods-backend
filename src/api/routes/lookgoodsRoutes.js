@@ -56,6 +56,7 @@ export default app => {
     .post(CommentController.createComment)
     .get(CommentController.getCommentList)
     .delete(ReviewController.deleteReview)
+    .put(ReviewController.editReview)
 
     app.route('/reviews/:id/comments/:cid')
     .put(CommentController.changeCommentInfo)
