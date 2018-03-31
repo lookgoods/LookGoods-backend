@@ -47,7 +47,7 @@ export function sendUploadToGCS (req, res, next) {
 			const thumbnailName = `thumbnail/thumbnail-${Date.now()}-${req.file.originalname}`
 			const thumbnailFile = bucket.file(thumbnailName)
 
-			sharp(req.file.buffer).resize(360, 360).ignoreAspectRatio().toBuffer().then((data) => {
+			sharp(req.file.buffer).resize(360, 360).toBuffer().then((data) => {
 				const stream = thumbnailFile.createWriteStream({
 					metadata: {
 						contentType: req.file.mimetype
@@ -71,23 +71,4 @@ export function sendUploadToGCS (req, res, next) {
 	})
 
 	stream.end(req.file.buffer)
-
-	sharp(req.file.buffer).resize(360, 360).toBuffer().then((data) => {
-		const stream = originalFile.createWriteStream({
-			metadata: {
-				contentType: req.file.mimetype
-			}
-		})
-		stream.on('error', (err) => {
-			res.status(400).send(err)
-		})
-		stream.on('finish', () => {
-			originalFile.makePublic().then(() => {
-				const cloudStoragePublicUrl = getPublicUrl(originalName)
-				res.status(200).send(cloudStoragePublicUrl)
-			})
-		})
-
-		stream.end(data)
-	})
 }
