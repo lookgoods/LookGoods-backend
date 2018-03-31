@@ -4,6 +4,7 @@ const ReviewSchema = new Schema({
     title: String,
     user: { type: Schema.Types.ObjectId, ref: 'User' },
     picture_cover_url: String,
+    picture_thumbnail_url: String,
     content_list: [],
     price: Number,
     product_id: { type: Schema.Types.ObjectId, ref: 'Product' },

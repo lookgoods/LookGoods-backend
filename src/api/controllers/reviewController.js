@@ -38,6 +38,7 @@ export default {
                     user: req.session.user_id,
                     title: req.body.title,
                     picture_cover_url: req.body.picture_cover_url,
+                    picture_thumbnail_url: req.body.picture_thumbnail_url,
                     content_list: req.body.content_list,
                     product_id: product._id,
                     price: req.body.price,
@@ -62,6 +63,7 @@ export default {
                 user: req.session.user_id,
                 title: req.body.title,
                 picture_cover_url: req.body.picture_cover_url,
+                picture_thumbnail_url: req.body.picture_thumbnail_url,
                 content_list: req.body.content_list,
                 product_id: product[0]._id,
                 comment_list: req.body.comment_list,
@@ -119,6 +121,7 @@ export default {
                 }, {
                     title: req.body.title,
                     picture_cover_url: req.body.picture_cover_url,
+                    picture_thumbnail_url: req.body.picture_thumbnail_url,
                     content_list: req.body.content_list,
                     product_id: product._id,
                     price: req.body.price,
@@ -137,6 +140,7 @@ export default {
             }, {
                 title: req.body.title,
                 picture_cover_url: req.body.picture_cover_url,
+                picture_thumbnail_url: req.body.picture_thumbnail_url,
                 content_list: req.body.content_list,
                 product_id: product._id,
                 price: req.body.price,
