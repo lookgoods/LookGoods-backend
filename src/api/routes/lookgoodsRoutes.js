@@ -49,6 +49,9 @@ export default app => {
     .get(ReviewController.getReviewList)
     .post(ReviewController.createReview)
 
+    app.route('/reviews/following')
+    .get(ReviewController.getReviewByFollowing)
+
     app.route('/reviews/:id')
     .post(CommentController.createComment)
     .get(CommentController.getCommentList)

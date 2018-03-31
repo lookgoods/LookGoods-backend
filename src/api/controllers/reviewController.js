@@ -15,6 +15,16 @@ export default {
         res.json(reviewList)
     }),
 
+    getReviewByFollowing: (req, res) => User.find({_id:req.session.user_id}, (err,currentUser) => {
+        if (err) res.send(err)
+        console.log(currentUser)
+        Review.find({user: { $in: currentUser[0].following_list }}, (err, review_list) => {
+            if (err) res.send(err)
+            console.log(review_list)
+            res.json(review_list)
+        })
+    }),
+
     createReview: (req, res) => Product.find({name:req.body.name}, (err, product) => {
         if (err) res.send(err)
         console.log(product)
