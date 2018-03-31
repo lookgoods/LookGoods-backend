@@ -91,8 +91,7 @@ export default {
         available: 0
     }, (err ,updated) => {
         if (err) res.send(err)
-        console.log(updated)
-        if (updated.n == 0){
+        if (updated.nModified == 0){
             res.send(updated)
         }else{
             User.update({_id:req.session.user_id}, {
