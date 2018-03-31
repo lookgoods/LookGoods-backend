@@ -10,7 +10,8 @@ const ReviewSchema = new Schema({
     comment_list: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
     like_by_list: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     rating: Number,
-    timestamp: { type: Date, default: Date.now }
+    timestamp: { type: Date, default: Date.now },
+    available: Boolean
 
 })
 

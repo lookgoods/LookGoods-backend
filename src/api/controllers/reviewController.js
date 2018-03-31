@@ -17,10 +17,8 @@ export default {
 
     getReviewByFollowing: (req, res) => User.find({_id:req.session.user_id}, (err,currentUser) => {
         if (err) res.send(err)
-        console.log(currentUser)
         Review.find({user: { $in: currentUser[0].following_list }}, (err, review_list) => {
             if (err) res.send(err)
-            console.log(review_list)
             res.json(review_list)
         })
     }),
@@ -46,7 +44,8 @@ export default {
                     price: req.body.price,
                     comment_list: req.body.comment_list,
                     like_by_list: req.body.like_by_list,
-                    rating: req.body.rating
+                    rating: req.body.rating,
+                    available: req.body.available
                 }
                 const newReview = new Review(reviewInfo)
                 newReview.save((err, review) => {
@@ -68,7 +67,8 @@ export default {
                 product_id: product[0]._id,
                 comment_list: req.body.comment_list,
                 like_by_list: req.body.like_by_list,
-                rating: req.body.rating
+                rating: req.body.rating,
+                available: req.body.available
             }
             const newReview = new Review(reviewInfo)
             newReview.save((err, review) => {
@@ -84,20 +84,21 @@ export default {
             
     }),
 
-    deleteReview: (req, res) => Review.remove({
+    deleteReview: (req, res) => Review.update({
         _id:req.params.id,
         user:req.session.user_id
-    }, (err ,review) => {
+    }, {
+        available: 0
+    }, (err ,updated) => {
         if (err) res.send(err)
-        console.log(review)
-        if (review.length == 0){
-            res.send(review)
+        console.log(updated)
+        if (updated.n == 0){
+            res.send(updated)
         }else{
             User.update({_id:req.session.user_id}, {
                 $pull : { own_post_list:req.params.id }
             }, (err, updated) =>{
                 if (err) res.send(err)
-                
                 res.send(updated)
             })
         }
