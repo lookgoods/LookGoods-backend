@@ -1,3 +1,4 @@
+import Mongoose from 'mongoose'
 import Review from '../models/reviewModel'
 import Product from '../models/productModel'
 import User from '../models/userModel'
@@ -5,6 +6,11 @@ import User from '../models/userModel'
 export default {
 
 	getReviewList: (req, res) => Review.find({}, (err, reviewList) => {
+		if (err) res.send(err)
+		res.json(reviewList)
+	}),
+
+	getUserReviews: (req, res) => Review.find({user: req.params.id}, (err, reviewList) => {
 		if (err) res.send(err)
 		res.json(reviewList)
 	}),
