@@ -26,7 +26,7 @@ export default {
         res.json(review[0].comment_list)
     }),
 
-    changeCommentInfo: (req, res) => Comment.update({_id:req.params.cid,user:req.session.user_id}, {
+    editComment: (req, res) => Comment.update({_id:req.params.cid,user:req.session.user_id}, {
         description: req.body.description,
         rating: req.body.rating
     }, (err, updated) => {

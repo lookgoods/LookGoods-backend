@@ -15,12 +15,12 @@ export default {
         })
     },
 
-    getUserInfo: (req, res) => User.find({_id:req.params.id}, (err, user) => {
+    getUser: (req, res) => User.find({_id:req.params.id}, (err, user) => {
         if (err) res.send(err)
         res.json(user[0])
     }),
 
-    changeUserInfo: (req, res) => User.update({_id:req.session.user_id}, {
+    editUserInfo: (req, res) => User.update({_id:req.session.user_id}, {
         description: req.body.description
     }, (err, user) => {
         if (err) res.send(err)

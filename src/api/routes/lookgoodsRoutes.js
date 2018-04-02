@@ -27,16 +27,24 @@ export default app => {
 		sendUploadToGCS(req, res, next)
 	})
 
+	app.route('/currentuser')
+		.get(UserController.getCurrentUser)
+
 	app.route('/users')
 		.get(UserController.getUserList)
 		.post(UserController.createUser)
 
 	app.route('/users/:id')
-		.get(UserController.getUserInfo)
-		.put(UserController.changeUserInfo)
+		.get(UserController.getUser)
+		.put(UserController.editUserInfo)
+
+
 
 	app.route('/users/:id/follow')
 		.put(UserController.followUser)
+
+	app.route('/users/:id/unfollow')
+		.put(UserController.unfollowUser)
 
 	app.route('/users/:id/follower')
 		.get(UserController.getFollower)
@@ -44,34 +52,37 @@ export default app => {
 	app.route('/users/:id/following')
 		.get(UserController.getFollowing)
 
-	app.route('/users/:id/unfollow')
-		.put(UserController.unfollowUser)
+	
 
 	app.route('/users/:id/reviews')
 		.get(ReviewController.getUserReviews)
 
+
+
 	app.route('/reviews/following')
 		.get(ReviewController.getReviewByFollowing)
 
-	app.route('/reviews/:id')
-		.post(CommentController.createComment)
-		.get(CommentController.getCommentList)
-		.delete(ReviewController.deleteReview)
-		.put(ReviewController.editReview)
+	app.route('/users/:id/reviews/following')
+		.get(ReviewController.getReviewByUserFollowing)
 
-	app.route('/currentuser')
-		.get(UserController.getCurrentUser)
 
+		
 	app.route('/reviews')
 		.get(ReviewController.getReviewList)
 		.post(ReviewController.createReview)
 
 	app.route('/reviews/:id')
 		.post(CommentController.createComment)
-		.get(CommentController.getCommentList)
+		.get(ReviewController.getReview)
 		.delete(ReviewController.deleteReview)
+		.put(ReviewController.editReview)
+
+	app.route('/reviews/:id/comments')
+		.get(CommentController.getCommentList)
 
 	app.route('/reviews/:id/comments/:cid')
-		.put(CommentController.changeCommentInfo)
-		.delete(CommentController.deleteComment)
+		.put(CommentController.editComment)
+        .delete(CommentController.deleteComment)
+        
+    
 }

@@ -10,6 +10,11 @@ export default {
 		res.json(reviewList)
 	}),
 
+	getReview: (req, res) => Review.find({_id:req.params.id} ,(err, review) => {
+		if (err) res.send(err)
+		res.json(review[0])
+	}),
+
 	getUserReviews: (req, res) => Review.find({user: req.params.id}, (err, reviewList) => {
 		if (err) res.send(err)
 		res.json(reviewList)
@@ -18,6 +23,14 @@ export default {
 	getReviewByFollowing: (req, res) => User.find({_id: req.session.user_id}, (err, currentUser) => {
 		if (err) res.send(err)
 		Review.find({user: { $in: currentUser[0].following_list }}, (err, review_list) => {
+			if (err) res.send(err)
+			res.json(review_list)
+		})
+	}),
+
+	getReviewByUserFollowing: (req, res) => User.find({_id: req.params.id}, (err, user) => {
+		if (err) res.send(err)
+		Review.find({user: { $in: user[0].following_list }}, (err, review_list) => {
 			if (err) res.send(err)
 			res.json(review_list)
 		})
@@ -149,6 +162,6 @@ export default {
 				res.json(updated)
 			})
 		}
-	})
+    })
 
 }
