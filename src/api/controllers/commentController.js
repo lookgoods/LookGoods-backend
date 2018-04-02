@@ -26,7 +26,7 @@ export default {
     },
 
     getCommentList: (req, res) => Review.find({ _id:req.params.id })
-        .populate('user')
+        .populate('comment_list')
         .exec( (err, review) => {
             if (err) res.send(err)
             res.json(review[0].comment_list)
