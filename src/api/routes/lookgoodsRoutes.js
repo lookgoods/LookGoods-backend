@@ -77,6 +77,9 @@ export default app => {
 		.delete(ReviewController.deleteReview)
 		.put(ReviewController.editReview)
 
+	app.route('/reviews/:id/save')
+		.put(ReviewController.saveReview)
+
 	app.route('/reviews/:id/comments')
 		.get(CommentController.getCommentList)
 

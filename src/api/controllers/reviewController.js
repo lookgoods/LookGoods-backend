@@ -13,7 +13,7 @@ export default {
 			res.json(reviewList)
 	}),
 
-	getReview: (req, res) => Review.find({_id:req.params.id})
+	getReview: (req, res) => Review.find({ _id:req.params.id })
 		.populate('user')
 		.populate('product_id')
 		.exec((err, review) => {
@@ -21,7 +21,7 @@ export default {
 			res.json(review[0])
 	}),
 
-	getUserReviews: (req, res) => Review.find({user: req.params.id})
+	getUserReviews: (req, res) => Review.find({ user: req.params.id })
 		.populate('user')
 		.populate('product_id')
 		.exec((err, reviewList) => {
@@ -29,7 +29,7 @@ export default {
 			res.json(reviewList)
 	}),
 
-	getReviewByFollowing: (req, res) => User.find({_id: req.session.user_id})
+	getReviewByFollowing: (req, res) => User.find({ _id: req.session.user_id })
 		.populate('own_post_list')
 		.exec((err, currentUser) => {
 			if (err) res.send(err)
@@ -42,7 +42,7 @@ export default {
 				})
 	}),
 
-	getReviewByUserFollowing: (req, res) => User.find({_id: req.params.id})
+	getReviewByUserFollowing: (req, res) => User.find({ _id: req.params.id })
 		.populate('own_post_list')
 		.exec( (err, user) => {
 			if (err) res.send(err)
@@ -55,7 +55,7 @@ export default {
 				})
 	}),
 
-	createReview: (req, res) => Product.find({name: req.body.name})
+	createReview: (req, res) => Product.find({ name: req.body.name })
 		.exec((err, product) => {
 			if (err) res.send(err)
 			if (product.length === 0) {
@@ -189,6 +189,20 @@ export default {
 					res.send(updated)
 				})
 			}
-    })
+	}),
+	
+	saveReview: (req, res) => Review.find({ _id: req.params.id })
+		.exec( (err, review) => {
+			if (err) res.send(err)
+			User.update(
+				{
+					_id: req.session.user_id
+				},{
+					$push: { saved_post_list: req.params.id }
+				}, (err, updated) => {
+					if (err) res.send(err)
+					res.send(updated)
+				})
+		})
 
 }
