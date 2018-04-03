@@ -1,4 +1,3 @@
-import Mongoose from 'mongoose'
 import Review from '../models/reviewModel'
 import Product from '../models/productModel'
 import User from '../models/userModel'
@@ -8,18 +7,18 @@ export default {
 	getReviewList: (req, res) => Review.find({})
 		.populate('user')
 		.populate('product_id')
-		.exec( (err, reviewList) => {
+		.exec((err, reviewList) => {
 			if (err) res.send(err)
 			res.json(reviewList)
-	}),
+		}),
 
-	getReview: (req, res) => Review.find({ _id:req.params.id })
+	getReview: (req, res) => Review.find({ _id: req.params.id })
 		.populate('user')
 		.populate('product_id')
 		.exec((err, review) => {
 			if (err) res.send(err)
 			res.json(review[0])
-	}),
+		}),
 
 	getUserReviews: (req, res) => Review.find({ user: req.params.id })
 		.populate('user')
@@ -27,7 +26,7 @@ export default {
 		.exec((err, reviewList) => {
 			if (err) res.send(err)
 			res.json(reviewList)
-	}),
+		}),
 
 	getReviewByFollowing: (req, res) => User.find({ _id: req.session.user_id })
 		.populate('own_post_list')
@@ -36,24 +35,24 @@ export default {
 			Review.find({user: { $in: currentUser[0].following_list }})
 				.populate('user')
 				.populate('product_id')
-				.exec( (err, review_list) => {
+				.exec((err, reviewList) => {
 					if (err) res.send(err)
-					res.json(review_list)
+					res.json(reviewList)
 				})
-	}),
+		}),
 
 	getReviewByUserFollowing: (req, res) => User.find({ _id: req.params.id })
 		.populate('own_post_list')
-		.exec( (err, user) => {
+		.exec((err, user) => {
 			if (err) res.send(err)
 			Review.find({user: { $in: user[0].following_list }})
 				.populate('user')
 				.populate('product_id')
-				.exec( (err, review_list) => {
+				.exec((err, reviewList) => {
 					if (err) res.send(err)
-					res.json(review_list)
+					res.json(reviewList)
 				})
-	}),
+		}),
 
 	createReview: (req, res) => Product.find({ name: req.body.name })
 		.exec((err, product) => {
@@ -115,7 +114,7 @@ export default {
 					})
 				})
 			}
-	}),
+		}),
 
 	deleteReview: (req, res) => Review.update(
 		{
@@ -134,16 +133,15 @@ export default {
 					}, {
 						$pull: { own_post_list: req.params.id }
 					}, (err, updated) => {
-
-					if (err) res.send(err)
-					res.send(updated)
-				})
+						if (err) res.send(err)
+						res.send(updated)
+					})
 			}
 		}
 	),
 
 	editReview: (req, res) => Product.find({name: req.body.name})
-		.exec( (err, product) => {
+		.exec((err, product) => {
 			if (err) res.send(err)
 			if (product.length === 0) {
 				const productInfo = {
@@ -189,15 +187,15 @@ export default {
 					res.send(updated)
 				})
 			}
-	}),
-	
+		}),
+
 	saveReview: (req, res) => Review.find({ _id: req.params.id })
-		.exec( (err, review) => {
+		.exec((err, review) => {
 			if (err) res.send(err)
 			User.update(
 				{
 					_id: req.session.user_id
-				},{
+				}, {
 					$push: { saved_post_list: req.params.id }
 				}, (err, updated) => {
 					if (err) res.send(err)
@@ -206,12 +204,12 @@ export default {
 		}),
 
 	unSaveReview: (req, res) => Review.find({ _id: req.params.id })
-		.exec( (err, review) => {
+		.exec((err, review) => {
 			if (err) res.send(err)
 			User.update(
 				{
 					_id: req.session.user_id
-				},{
+				}, {
 					$pull: { saved_post_list: req.params.id }
 				}, (err, updated) => {
 					if (err) res.send(err)

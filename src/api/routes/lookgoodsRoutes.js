@@ -38,8 +38,6 @@ export default app => {
 		.get(UserController.getUser)
 		.put(UserController.editUserInfo)
 
-
-
 	app.route('/users/:id/follow')
 		.put(UserController.followUser)
 
@@ -52,12 +50,8 @@ export default app => {
 	app.route('/users/:id/following')
 		.get(UserController.getFollowing)
 
-	
-
 	app.route('/users/:id/reviews')
 		.get(ReviewController.getUserReviews)
-
-
 
 	app.route('/reviews/following')
 		.get(ReviewController.getReviewByFollowing)
@@ -65,8 +59,6 @@ export default app => {
 	app.route('/users/:id/reviews/following')
 		.get(ReviewController.getReviewByUserFollowing)
 
-
-		
 	app.route('/reviews')
 		.get(ReviewController.getReviewList)
 		.post(ReviewController.createReview)
@@ -88,7 +80,5 @@ export default app => {
 
 	app.route('/reviews/:id/comments/:cid')
 		.put(CommentController.editComment)
-        .delete(CommentController.deleteComment)
-        
-    
+		.delete(CommentController.deleteComment)
 }
