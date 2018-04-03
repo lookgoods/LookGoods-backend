@@ -203,6 +203,20 @@ export default {
 					if (err) res.send(err)
 					res.send(updated)
 				})
+		}),
+
+	unSaveReview: (req, res) => Review.find({ _id: req.params.id })
+		.exec( (err, review) => {
+			if (err) res.send(err)
+			User.update(
+				{
+					_id: req.session.user_id
+				},{
+					$pull: { saved_post_list: req.params.id }
+				}, (err, updated) => {
+					if (err) res.send(err)
+					res.send(updated)
+				})
 		})
 
 }
