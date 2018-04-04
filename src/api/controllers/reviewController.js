@@ -6,7 +6,7 @@ export default {
 
 	getReviewList: (req, res) => Review.find({})
 		.populate('user')
-		.populate('product_id')
+		.populate('product')
 		.exec((err, reviewList) => {
 			if (err) res.send(err)
 			res.json(reviewList)
@@ -14,7 +14,7 @@ export default {
 
 	getReview: (req, res) => Review.find({ _id: req.params.id })
 		.populate('user')
-		.populate('product_id')
+		.populate('product')
 		.exec((err, review) => {
 			if (err) res.send(err)
 			res.json(review[0])
@@ -22,7 +22,7 @@ export default {
 
 	getUserReviews: (req, res) => Review.find({ user: req.params.id })
 		.populate('user')
-		.populate('product_id')
+		.populate('product')
 		.exec((err, reviewList) => {
 			if (err) res.send(err)
 			res.json(reviewList)
@@ -34,7 +34,7 @@ export default {
 			if (err) res.send(err)
 			Review.find({user: { $in: currentUser[0].following_list }})
 				.populate('user')
-				.populate('product_id')
+				.populate('product')
 				.exec((err, reviewList) => {
 					if (err) res.send(err)
 					res.json(reviewList)
@@ -47,7 +47,7 @@ export default {
 			if (err) res.send(err)
 			Review.find({user: { $in: user[0].following_list }})
 				.populate('user')
-				.populate('product_id')
+				.populate('product')
 				.exec((err, reviewList) => {
 					if (err) res.send(err)
 					res.json(reviewList)
@@ -72,7 +72,7 @@ export default {
 						picture_cover_url: req.body.picture_cover_url,
 						picture_thumbnail_url: req.body.picture_thumbnail_url,
 						content_list: req.body.content_list,
-						product_id: product._id,
+						product: product._id,
 						price: req.body.price,
 						comment_list: req.body.comment_list,
 						like_by_list: req.body.like_by_list,
@@ -97,7 +97,7 @@ export default {
 					picture_cover_url: req.body.picture_cover_url,
 					picture_thumbnail_url: req.body.picture_thumbnail_url,
 					content_list: req.body.content_list,
-					product_id: product[0]._id,
+					product: product[0]._id,
 					comment_list: req.body.comment_list,
 					like_by_list: req.body.like_by_list,
 					rating: req.body.rating,
@@ -160,7 +160,7 @@ export default {
 						picture_cover_url: req.body.picture_cover_url,
 						picture_thumbnail_url: req.body.picture_thumbnail_url,
 						content_list: req.body.content_list,
-						product_id: product._id,
+						product: product._id,
 						price: req.body.price,
 						rating: req.body.rating,
 						available: 1
@@ -178,7 +178,7 @@ export default {
 					picture_cover_url: req.body.picture_cover_url,
 					picture_thumbnail_url: req.body.picture_thumbnail_url,
 					content_list: req.body.content_list,
-					product_id: product[0]._id,
+					product: product[0]._id,
 					price: req.body.price,
 					rating: req.body.rating,
 					available: 1

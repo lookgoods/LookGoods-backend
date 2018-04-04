@@ -7,7 +7,7 @@ const ReviewSchema = new Schema({
 	picture_thumbnail_url: String,
 	content_list: [],
 	price: Number,
-	product_id: { type: Schema.Types.ObjectId, ref: 'Product' },
+	product: { type: Schema.Types.ObjectId, ref: 'Product' },
 	comment_list: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
 	like_by_list: [{ type: Schema.Types.ObjectId, ref: 'User' }],
 	rating: Number,
