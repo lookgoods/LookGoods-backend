@@ -25,10 +25,14 @@ export default {
 	},
 
 	getCommentList: (req, res) => Review.find({ _id: req.params.id })
-		.populate('comment_list')
 		.exec((err, review) => {
 			if (err) res.send(err)
-			res.json(review[0].comment_list)
+			Comment.find({ _id: { $in: review[0].comment_list } })
+				.populate('user')
+				.exec((err, comment) => {
+					if (err) res.send(err)
+					res.send(comment)
+				})
 		}),
 
 	editComment: (req, res) => Comment.update(
