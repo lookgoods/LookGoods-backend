@@ -38,6 +38,11 @@ export default app => {
 		.get(UserController.getCurrentUserOwnPostList)
 	app.route('/currentuser/savepostlist')
 		.get(UserController.getCurrentUserSavePostList)
+	app.route('currentuser/follow/users/:id')
+		.put(UserController.followUser)
+	app.route('currentuser/unfollow/users/:id')
+		.put(UserController.unfollowUser)
+
 	app.route('/currentuser/follower')
 		.get(UserController.getCurrentUserFollower)
 	app.route('/currentuser/following')
@@ -62,14 +67,6 @@ export default app => {
 	app.route('/users/:id/comments')
 		.get(UserController.getUserCommentList)
 
-	// current user follow this user id
-	app.route('/users/:id/follow')
-		.put(UserController.followUser)
-
-	// current user unfollow this user id
-	app.route('/users/:id/unfollow')
-		.put(UserController.unfollowUser)
-
 	app.route('/reviews')
 		.get(ReviewController.getReviewList)
 		.post(ReviewController.createReview)
@@ -78,7 +75,6 @@ export default app => {
 		.get(ReviewController.getReview)
 		.put(ReviewController.editReview)
 		.delete(ReviewController.deleteReview)
-		.post(CommentController.createComment)
 
 	app.route('/reviews/:id/save')
 		.put(ReviewController.saveReview)
@@ -92,6 +88,7 @@ export default app => {
 
 	app.route('/reviews/:id/comments')
 		.get(CommentController.getReviewCommentList)
+		.post(CommentController.createComment)
 
 	app.route('/reviews/:id/comments/:cid')
 		.put(CommentController.editComment)

@@ -26,7 +26,7 @@ export default {
 							$push: { comment_list: comment._id }
 						}, (err, updateUser) => {
 							if (err) res.send(err)
-							res.send(updateUser)
+							res.send(comment)
 						}
 					)
 				}
