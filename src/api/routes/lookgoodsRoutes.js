@@ -50,6 +50,8 @@ export default app => {
 		.get(ReviewController.getCurrentUserFollowingReview)
 	app.route('/currentuser/comments')
 		.get(UserController.getCurrentUserCommentList)
+	app.route('/currentuser/notifications')
+		.get(UserController.getCurrentUserNotification)
 
 	app.route('/users/:id')
 		.get(UserController.getUser)

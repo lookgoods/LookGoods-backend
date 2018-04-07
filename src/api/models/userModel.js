@@ -1,5 +1,10 @@
 import Mongoose, { Schema } from 'mongoose'
 
+const subNotification = new Schema({
+	kind: String,
+	item: { type: Schema.Types.ObjectId, refPath: 'notification.kind' }
+}, { _id: false })
+
 const UserSchema = new Schema({
 	client_id: String,
 	name: String,
@@ -9,7 +14,7 @@ const UserSchema = new Schema({
 	saved_post_list: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
 	own_post_list: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
 	comment_list: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
-	// notification: [{ kind: String, item: { type: Schema.Types.ObjectId, refPath: 'notification.kind' } }],
+	notification: [subNotification],
 	description: String
 })
 

@@ -181,5 +181,13 @@ export default {
 					}
 				)
 			}
+		}),
+
+	getCurrentUserNotification: (req, res) => User.find({ _id: req.session.user_id })
+		.populate('notification.item')
+		.populate({path: 'notification.item', populate: {path: 'user'}})
+		.exec((err, currentUser) => {
+			if (err) res.send(err)
+			res.send(currentUser[0].notification)
 		})
 }

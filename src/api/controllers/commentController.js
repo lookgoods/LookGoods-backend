@@ -26,7 +26,16 @@ export default {
 							$push: { comment_list: comment._id }
 						}, (err, updateUser) => {
 							if (err) res.send(err)
-							res.send(comment)
+							User.update(
+								{
+									following_list: req.session.user_id
+								}, {
+									$push: { notification: { kind: 'Comment', item: comment._id } }
+								}, (err, notificationUpdated) => {
+									if (err) res.send(err)
+									res.send(comment)
+								}
+							)
 						}
 					)
 				}

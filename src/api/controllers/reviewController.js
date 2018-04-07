@@ -79,15 +79,15 @@ export default {
 								$push: { own_post_list: review._id }
 							}, (err, updated) => {
 								if (err) res.send(err)
-								// User.update(
-								// 	{
-								// 		following_list: { $in: req.session.user_id }
-								// 	}, {
-								// 		$push: { notification: review._id }
-								// 	}, (err, userUpdated) => {
-								// 		if (err) res.send(err)
-								res.json(review)
-								// })
+								User.update(
+									{
+										following_list: { $in: req.session.user_id }
+									}, {
+										$push: { notification: { kind: 'Review', item: review._id } }
+									}, (err, userUpdated) => {
+										if (err) res.send(err)
+										res.json(review)
+									})
 							})
 					})
 				})
@@ -114,15 +114,16 @@ export default {
 							$push: { own_post_list: review._id }
 						}, (err, updated) => {
 							if (err) res.send(err)
-							// User.update(
-							// 	{
-							// 		following_list: { $in: req.session.user_id }
-							// 	}, {
-							// 		$push: { notification: review._id }
-							// 	}, (err, userUpdated) => {
-							// 		if (err) res.send(err)
-							res.json(review)
-							// })
+							User.update(
+								{
+									following_list: req.session.user_id
+								}, {
+									$push: { notification: { kind: 'Review', item: review._id } }
+								}, (err, userUpdated) => {
+									if (err) res.send(err)
+									console.log(userUpdated)
+									res.json(review)
+								})
 						})
 				})
 			}
