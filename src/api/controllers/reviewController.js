@@ -20,16 +20,7 @@ export default {
 			res.json(review[0])
 		}),
 
-	getUserReviews: (req, res) => Review.find({ user: req.params.id })
-		.populate('user')
-		.populate('product')
-		.exec((err, reviewList) => {
-			if (err) res.send(err)
-			res.json(reviewList)
-		}),
-
-	getReviewByFollowing: (req, res) => User.find({ _id: req.session.user_id })
-		.populate('own_post_list')
+	getCurrentUserFollowingReview: (req, res) => User.find({ _id: req.session.user_id })
 		.exec((err, currentUser) => {
 			if (err) res.send(err)
 			Review.find({user: { $in: currentUser[0].following_list }})
@@ -41,8 +32,7 @@ export default {
 				})
 		}),
 
-	getReviewByUserFollowing: (req, res) => User.find({ _id: req.params.id })
-		.populate('own_post_list')
+	getUserFollowingReview: (req, res) => User.find({ _id: req.params.id })
 		.exec((err, user) => {
 			if (err) res.send(err)
 			Review.find({user: { $in: user[0].following_list }})

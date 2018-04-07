@@ -24,21 +24,24 @@ export default {
 		})
 	},
 
-	getCommentList: (req, res) => Comment.find({ user: req.session.user_id })
+	getCurrentUserCommentList: (req, res) => Comment.find({ user: req.session.user_id })
+		.exec((err, comment) => {
+			if (err) res.send(err)
+			res.send(comment)
+		}),
+
+	getUserCommentList: (req, res) => Comment.find({ user: req.params.id })
 		.exec((err, comment) => {
 			if (err) res.send(err)
 			res.send(comment)
 		}),
 
 	getReviewCommentList: (req, res) => Review.find({ _id: req.params.id })
+		.populate('comment_list')
+		.populate({path: 'comment_list', populate: {path: 'user'}})
 		.exec((err, review) => {
 			if (err) res.send(err)
-			Comment.find({ _id: { $in: review[0].comment_list } })
-				.populate('user')
-				.exec((err, comment) => {
-					if (err) res.send(err)
-					res.send(comment)
-				})
+			res.send(review[0].comment_list)
 		}),
 
 	editComment: (req, res) => Comment.update(
