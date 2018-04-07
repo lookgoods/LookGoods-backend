@@ -72,12 +72,23 @@ export default {
 					const newReview = new Review(reviewInfo)
 					newReview.save((err, review) => {
 						if (err) res.send(err)
-						User.update({_id: req.session.user_id}, {
-							$push: {own_post_list: review._id}
-						}, (err, updated) => {
-							if (err) res.send(err)
-							res.json(review)
-						})
+						User.update(
+							{
+								_id: req.session.user_id
+							}, {
+								$push: { own_post_list: review._id }
+							}, (err, updated) => {
+								if (err) res.send(err)
+								// User.update(
+								// 	{
+								// 		following_list: { $in: req.session.user_id }
+								// 	}, {
+								// 		$push: { notification: review._id }
+								// 	}, (err, userUpdated) => {
+								// 		if (err) res.send(err)
+								res.json(review)
+								// })
+							})
 					})
 				})
 			} else {
@@ -96,12 +107,23 @@ export default {
 				const newReview = new Review(reviewInfo)
 				newReview.save((err, review) => {
 					if (err) res.send(err)
-					User.update({_id: req.session.user_id}, {
-						$push: {own_post_list: review._id}
-					}, (err, updated) => {
-						if (err) res.send(err)
-						res.json(review)
-					})
+					User.update(
+						{
+							_id: req.session.user_id
+						}, {
+							$push: { own_post_list: review._id }
+						}, (err, updated) => {
+							if (err) res.send(err)
+							// User.update(
+							// 	{
+							// 		following_list: { $in: req.session.user_id }
+							// 	}, {
+							// 		$push: { notification: review._id }
+							// 	}, (err, userUpdated) => {
+							// 		if (err) res.send(err)
+							res.json(review)
+							// })
+						})
 				})
 			}
 		}),

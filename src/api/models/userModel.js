@@ -9,6 +9,7 @@ const UserSchema = new Schema({
 	saved_post_list: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
 	own_post_list: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
 	comment_list: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
+	// notification: [{ kind: String, item: { type: Schema.Types.ObjectId, refPath: 'notification.kind' } }],
 	description: String
 })
 

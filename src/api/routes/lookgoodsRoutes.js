@@ -38,11 +38,10 @@ export default app => {
 		.get(UserController.getCurrentUserOwnPostList)
 	app.route('/currentuser/savepostlist')
 		.get(UserController.getCurrentUserSavePostList)
-	app.route('currentuser/follow/users/:id')
+	app.route('/currentuser/follow/users/:id')
 		.put(UserController.followUser)
-	app.route('currentuser/unfollow/users/:id')
+	app.route('/currentuser/unfollow/users/:id')
 		.put(UserController.unfollowUser)
-
 	app.route('/currentuser/follower')
 		.get(UserController.getCurrentUserFollower)
 	app.route('/currentuser/following')

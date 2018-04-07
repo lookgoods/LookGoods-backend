@@ -123,7 +123,8 @@ export default {
 		{
 			_id: req.session.user_id,
 			following_list: req.params.id
-		}, (err, currentUser) => {
+		})
+		.exec((err, currentUser) => {
 			if (err) res.send(err)
 			if (currentUser.length === 0) {
 				User.update(
@@ -154,7 +155,8 @@ export default {
 		{
 			_id: req.session.user_id,
 			following_list: req.params.id
-		}, (err, currentUser) => {
+		})
+		.exec((err, currentUser) => {
 			if (err) res.send(err)
 			if (currentUser.length === 0) {
 				res.json(currentUser)
