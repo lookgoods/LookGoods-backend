@@ -45,7 +45,7 @@ export default {
 
 	getReviewCommentList: (req, res) => Review.find({ _id: req.params.id })
 		.populate('comment_list')
-		.populate({path: 'comment_list', populate: {path: 'user'}})
+		.populate({path: 'comment_list', populate: {path: 'user', select: 'name picture_url'}})
 		.exec((err, review) => {
 			if (err) res.send(err)
 			res.send(review[0].comment_list)

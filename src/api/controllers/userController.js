@@ -39,7 +39,7 @@ export default {
 
 	getUserSavePostList: (req, res) => User.find({ _id: req.params.id })
 		.populate('saved_post_list')
-		.populate({path: 'saved_post_list', populate: {path: 'user'}})
+		.populate({path: 'saved_post_list', populate: {path: 'user', select: 'name picture_url'}})
 		.populate({path: 'saved_post_list', populate: {path: 'product'}})
 		.exec((err, user) => {
 			if (err) res.send(err)
@@ -48,7 +48,7 @@ export default {
 
 	getCurrentUserSavePostList: (req, res) => User.find({ _id: req.session.user_id })
 		.populate('saved_post_list')
-		.populate({path: 'saved_post_list', populate: {path: 'user'}})
+		.populate({path: 'saved_post_list', populate: {path: 'user', select: 'name picture_url'}})
 		.populate({path: 'saved_post_list', populate: {path: 'product'}})
 		.exec((err, currentUser) => {
 			if (err) res.send(err)
@@ -57,7 +57,7 @@ export default {
 
 	getUserOwnPostList: (req, res) => User.find({ _id: req.params.id })
 		.populate('own_post_list')
-		.populate({path: 'own_post_list', populate: {path: 'user'}})
+		.populate({path: 'own_post_list', populate: {path: 'user', select: 'name picture_url'}})
 		.populate({path: 'own_post_list', populate: {path: 'product'}})
 		.exec((err, user) => {
 			if (err) res.send(err)
@@ -66,7 +66,7 @@ export default {
 
 	getCurrentUserOwnPostList: (req, res) => User.find({ _id: req.session.user_id })
 		.populate('own_post_list')
-		.populate({path: 'own_post_list', populate: {path: 'user'}})
+		.populate({path: 'own_post_list', populate: {path: 'user', select: 'name picture_url'}})
 		.populate({path: 'own_post_list', populate: {path: 'product'}})
 		.exec((err, currentUser) => {
 			if (err) res.send(err)
@@ -185,7 +185,7 @@ export default {
 
 	getCurrentUserNotification: (req, res) => User.find({ _id: req.session.user_id })
 		.populate('notification.item')
-		.populate({path: 'notification.item', populate: {path: 'user'}})
+		.populate({path: 'notification.item', populate: {path: 'user', select: 'name picture_url'}})
 		.exec((err, currentUser) => {
 			if (err) res.send(err)
 			res.send(currentUser[0].notification)

@@ -5,7 +5,7 @@ import User from '../models/userModel'
 export default {
 
 	getReviewList: (req, res) => Review.find({})
-		.populate('user')
+		.populate('user', 'name picture_url')
 		.populate('product')
 		.exec((err, reviewList) => {
 			if (err) res.send(err)
@@ -13,7 +13,7 @@ export default {
 		}),
 
 	getReview: (req, res) => Review.find({ _id: req.params.id })
-		.populate('user')
+		.populate('user', 'name picture_url')
 		.populate('product')
 		.exec((err, review) => {
 			if (err) res.send(err)
@@ -24,7 +24,7 @@ export default {
 		.exec((err, currentUser) => {
 			if (err) res.send(err)
 			Review.find({user: { $in: currentUser[0].following_list }})
-				.populate('user')
+				.populate('user', 'name picture_url')
 				.populate('product')
 				.exec((err, reviewList) => {
 					if (err) res.send(err)
@@ -36,7 +36,7 @@ export default {
 		.exec((err, user) => {
 			if (err) res.send(err)
 			Review.find({user: { $in: user[0].following_list }})
-				.populate('user')
+				.populate('user', 'name picture_url')
 				.populate('product')
 				.exec((err, reviewList) => {
 					if (err) res.send(err)
