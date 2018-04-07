@@ -205,6 +205,26 @@ export default {
 					if (err) res.send(err)
 					res.send(updated)
 				})
+		}),
+
+	likeReview: (req, res) => Review.update(
+		{
+			_id: req.params.id
+		}, {
+			$push: { like_by_list: req.session.user_id }
+		}, (err, updated) => {
+			if (err) res.send(err)
+			res.send(updated)
+		}),
+
+	unlikeReview: (req, res) => Review.update(
+		{
+			_id: req.params.id
+		}, {
+			$pull: { like_by_list: req.session.user_id }
+		}, (err, updated) => {
+			if (err) res.send(err)
+			res.send(updated)
 		})
 
 }
