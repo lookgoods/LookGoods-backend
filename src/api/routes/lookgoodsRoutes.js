@@ -27,28 +27,40 @@ export default app => {
 		sendUploadToGCS(req, res, next)
 	})
 
-	app.route('/currentuser')
-		.get(UserController.getCurrentUser)
-
 	app.route('/users')
 		.get(UserController.getUserList)
 		.post(UserController.createUser)
 
+	app.route('/currentuser')
+		.get(UserController.getCurrentUser)
+		.put(UserController.editUserInfo)
+	app.route('/currentuser/ownpostlist')
+		.get(UserController.getCurrentUserOwnPostList)
+	app.route('/currentuser/savepostlist')
+		.get(UserController.getCurrentUserSavePostList)
+	app.route('/currentuser/follower')
+		.get(UserController.getCurrentUserFollower)
+	app.route('/currentuser/following')
+		.get(UserController.getCurrentUserFollowing)
+
 	app.route('/users/:id')
 		.get(UserController.getUser)
-		.put(UserController.editUserInfo)
+	app.route('/users/:id/ownpostlist')
+		.get(UserController.getUserOwnPostList)
+	app.route('/users/:id/savepostlist')
+		.get(UserController.getUserSavePostList)
+	app.route('/users/:id/follower')
+		.get(UserController.getUserFollower)
+	app.route('/users/:id/following')
+		.get(UserController.getUserFollowing)
 
+	// current user follow this user id
 	app.route('/users/:id/follow')
 		.put(UserController.followUser)
 
+	// current user unfollow this user id
 	app.route('/users/:id/unfollow')
 		.put(UserController.unfollowUser)
-
-	app.route('/users/:id/follower')
-		.get(UserController.getFollower)
-
-	app.route('/users/:id/following')
-		.get(UserController.getFollowing)
 
 	app.route('/users/:id/reviews')
 		.get(ReviewController.getUserReviews)
@@ -76,9 +88,12 @@ export default app => {
 		.put(ReviewController.unSaveReview)
 
 	app.route('/reviews/:id/comments')
-		.get(CommentController.getCommentList)
+		.get(CommentController.getReviewCommentList)
 
 	app.route('/reviews/:id/comments/:cid')
 		.put(CommentController.editComment)
 		.delete(CommentController.deleteComment)
+
+	app.route('/comments')
+		.get(CommentController.getCommentList)
 }

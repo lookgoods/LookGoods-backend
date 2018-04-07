@@ -24,7 +24,13 @@ export default {
 		})
 	},
 
-	getCommentList: (req, res) => Review.find({ _id: req.params.id })
+	getCommentList: (req, res) => Comment.find({ user: req.session.user_id })
+		.exec((err, comment) => {
+			if (err) res.send(err)
+			res.send(comment)
+		}),
+
+	getReviewCommentList: (req, res) => Review.find({ _id: req.params.id })
 		.exec((err, review) => {
 			if (err) res.send(err)
 			Comment.find({ _id: { $in: review[0].comment_list } })

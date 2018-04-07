@@ -9,44 +9,71 @@ export default {
 		})
 	},
 
+	editUserInfo: (req, res) => User.update(
+		{
+			_id: req.session.user_id
+		}, {
+			description: req.body.description
+		}, (err, currentUser) => {
+			if (err) res.send(err)
+			res.send(currentUser)
+		}),
+
 	getUserList: (req, res) => User.find({})
-		.populate('own_post_list')
 		.exec((err, user) => {
 			if (err) res.send(err)
 			res.json(user)
 		}),
 
 	getUser: (req, res) => User.find({ _id: req.params.id })
-		.populate('follower_list')
-		.populate('following_list')
-		.populate('saved_post_list')
-		.populate('own_post_list')
 		.exec((err, user) => {
 			if (err) res.send(err)
 			res.json(user[0])
 		}),
 
-	editUserInfo: (req, res) => User.update(
-		{
-			_id: req.session.user_id
-		}, {
-			description: req.body.description
-		}, (err, user) => {
-			if (err) res.send(err)
-			res.send(user)
-		}),
-
 	getCurrentUser: (req, res) => User.find({ _id: req.session.user_id })
-		.populate('follower_list')
-		.populate('following_list')
-		.populate('saved_post_list')
-		.populate('own_post_list')
 		.exec((err, currentUser) => {
 			if (err) res.send(err)
 			res.json(currentUser[0])
 		}),
 
-	getFollower: (req, res) => User.find({ _id: req.params.id }, (err, user) => {
+	getUserSavePostList: (req, res) => User.find({ _id: req.params.id })
+		.populate('saved_post_list')
+		.populate({path: 'saved_post_list', populate: {path: 'user'}})
+		.populate({path: 'saved_post_list', populate: {path: 'product'}})
+		.exec((err, user) => {
+			if (err) res.send(err)
+			res.json(user[0].save_post_list)
+		}),
+
+	getCurrentUserSavePostList: (req, res) => User.find({ _id: req.session.user_id })
+		.populate('saved_post_list')
+		.populate({path: 'saved_post_list', populate: {path: 'user'}})
+		.populate({path: 'saved_post_list', populate: {path: 'product'}})
+		.exec((err, currentUser) => {
+			if (err) res.send(err)
+			res.json(currentUser[0].save_post_list)
+		}),
+
+	getUserOwnPostList: (req, res) => User.find({ _id: req.params.id })
+		.populate('own_post_list')
+		.populate({path: 'own_post_list', populate: {path: 'user'}})
+		.populate({path: 'own_post_list', populate: {path: 'product'}})
+		.exec((err, user) => {
+			if (err) res.send(err)
+			res.json(user[0].own_post_list)
+		}),
+
+	getCurrentUserOwnPostList: (req, res) => User.find({ _id: req.session.user_id })
+		.populate('own_post_list')
+		.populate({path: 'own_post_list', populate: {path: 'user'}})
+		.populate({path: 'own_post_list', populate: {path: 'product'}})
+		.exec((err, currentUser) => {
+			if (err) res.send(err)
+			res.json(currentUser[0].own_post_list)
+		}),
+
+	getUserFollower: (req, res) => User.find({ _id: req.params.id }, (err, user) => {
 		if (err) res.send(err)
 		User.find({_id: { $in: user[0].follower_list }}, (err, userList) => {
 			if (err) res.send(err)
@@ -54,9 +81,25 @@ export default {
 		})
 	}),
 
-	getFollowing: (req, res) => User.find({ _id: req.params.id }, (err, user) => {
+	getCurrentUserFollower: (req, res) => User.find({ _id: req.session.user_id }, (err, currentUser) => {
+		if (err) res.send(err)
+		User.find({_id: { $in: currentUser[0].follower_list }}, (err, userList) => {
+			if (err) res.send(err)
+			res.json(userList)
+		})
+	}),
+
+	getUserFollowing: (req, res) => User.find({ _id: req.params.id }, (err, user) => {
 		if (err) res.send(err)
 		User.find({_id: { $in: user[0].following_list }}, (err, userList) => {
+			if (err) res.send(err)
+			res.json(userList)
+		})
+	}),
+
+	getCurrentUserFollowing: (req, res) => User.find({ _id: req.session.user_id }, (err, currentUser) => {
+		if (err) res.send(err)
+		User.find({_id: { $in: currentUser[0].following_list }}, (err, userList) => {
 			if (err) res.send(err)
 			res.json(userList)
 		})
