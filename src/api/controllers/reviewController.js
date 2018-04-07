@@ -84,7 +84,7 @@ export default {
 										following_list: { $in: req.session.user_id }
 									}, {
 										$push: { notification: { kind: 'Review', item: review._id } }
-									}, (err, userUpdated) => {
+									}, { multi: true }, (err, userUpdated) => {
 										if (err) res.send(err)
 										res.json(review)
 									})
@@ -119,7 +119,7 @@ export default {
 									following_list: req.session.user_id
 								}, {
 									$push: { notification: { kind: 'Review', item: review._id } }
-								}, (err, userUpdated) => {
+								}, { multi: true }, (err, userUpdated) => {
 									if (err) res.send(err)
 									console.log(userUpdated)
 									res.json(review)

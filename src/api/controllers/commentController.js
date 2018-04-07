@@ -31,7 +31,7 @@ export default {
 									following_list: req.session.user_id
 								}, {
 									$push: { notification: { kind: 'Comment', item: comment._id } }
-								}, (err, notificationUpdated) => {
+								}, { multi: true }, (err, notificationUpdated) => {
 									if (err) res.send(err)
 									res.send(comment)
 								}
