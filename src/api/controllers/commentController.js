@@ -1,5 +1,6 @@
 import Review from '../models/reviewModel'
 import Comment from '../models/commentModel'
+import User from '../models/userModel'
 
 export default {
 	createComment: (req, res) => {
@@ -16,25 +17,22 @@ export default {
 					_id: req.params.id
 				}, {
 					$push: { comment_list: comment._id }
-				}, (err, updatedComment) => {
+				}, (err, updatedReview) => {
 					if (err) res.send(err)
-					res.send(updatedComment)
+					User.update(
+						{
+							_id: req.session.user_id
+						}, {
+							$push: { comment_list: comment._id }
+						}, (err, updateUser) => {
+							if (err) res.send(err)
+							res.send(updateUser)
+						}
+					)
 				}
 			)
 		})
 	},
-
-	getCurrentUserCommentList: (req, res) => Comment.find({ user: req.session.user_id })
-		.exec((err, comment) => {
-			if (err) res.send(err)
-			res.send(comment)
-		}),
-
-	getUserCommentList: (req, res) => Comment.find({ user: req.params.id })
-		.exec((err, comment) => {
-			if (err) res.send(err)
-			res.send(comment)
-		}),
 
 	getReviewCommentList: (req, res) => Review.find({ _id: req.params.id })
 		.populate('comment_list')
@@ -70,12 +68,21 @@ export default {
 						_id: req.params.id
 					}, {
 						$pull: { comment_list: req.params.cid }
-					}, (err, updated) => {
+					}, (err, updatedReview) => {
 						if (err) res.send(err)
-						Comment.remove({ _id: req.params.cid }, (err, updated) => {
-							if (err) res.send(err)
-							res.send(updated)
-						})
+						User.update(
+							{
+								_id: req.session.user_id
+							}, {
+								$pull: { comment_list: req.params.cid }
+							}, (err, updateUser) => {
+								if (err) res.send(err)
+								Comment.remove({ _id: req.params.cid }, (err, updated) => {
+									if (err) res.send(err)
+									res.send(updated)
+								})
+							}
+						)
 					}
 				)
 			}

@@ -8,6 +8,7 @@ const UserSchema = new Schema({
 	following_list: [{ type: Schema.Types.ObjectId, ref: 'User' }],
 	saved_post_list: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
 	own_post_list: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
+	comment_list: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
 	description: String
 })
 

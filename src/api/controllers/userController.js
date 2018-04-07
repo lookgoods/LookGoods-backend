@@ -73,6 +73,20 @@ export default {
 			res.json(currentUser[0].own_post_list)
 		}),
 
+	getUserCommentList: (req, res) => User.find({ _id: req.params.id })
+		.populate('comment_list')
+		.exec((err, user) => {
+			if (err) res.send(err)
+			res.json(user[0].comment_list)
+		}),
+
+	getCurrentUserCommentList: (req, res) => User.find({ _id: req.session.user_id })
+		.populate('comment_list')
+		.exec((err, currentUser) => {
+			if (err) res.send(err)
+			res.json(currentUser[0].comment_list)
+		}),
+
 	getUserFollower: (req, res) => User.find({ _id: req.params.id }, (err, user) => {
 		if (err) res.send(err)
 		User.find({_id: { $in: user[0].follower_list }}, (err, userList) => {

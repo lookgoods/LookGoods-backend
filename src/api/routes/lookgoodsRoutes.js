@@ -45,7 +45,7 @@ export default app => {
 	app.route('/currentuser/following/reviews')
 		.get(ReviewController.getCurrentUserFollowingReview)
 	app.route('/currentuser/comments')
-		.get(CommentController.getCurrentUserCommentList)
+		.get(UserController.getCurrentUserCommentList)
 
 	app.route('/users/:id')
 		.get(UserController.getUser)
@@ -60,7 +60,7 @@ export default app => {
 	app.route('/users/:id/following/reviews')
 		.get(ReviewController.getUserFollowingReview)
 	app.route('/users/:id/comments')
-		.get(CommentController.getUserCommentList)
+		.get(UserController.getUserCommentList)
 
 	// current user follow this user id
 	app.route('/users/:id/follow')
