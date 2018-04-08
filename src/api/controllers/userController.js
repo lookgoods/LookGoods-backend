@@ -189,5 +189,16 @@ export default {
 		.exec((err, currentUser) => {
 			if (err) res.send(err)
 			res.send(currentUser[0].notification)
+		}),
+
+	deleteCurrentUserNotificaion: (req, res) => User.update(
+		{
+			_id: req.session.user_id
+		}, {
+			$pull: {notification: {item: req.params.id}}
+		}, (err, deleted) => {
+			if (err) res.send(err)
+			res.send(deleted)
 		})
+
 }

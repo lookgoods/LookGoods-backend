@@ -52,6 +52,8 @@ export default app => {
 		.get(UserController.getCurrentUserCommentList)
 	app.route('/currentuser/notifications')
 		.get(UserController.getCurrentUserNotification)
+	app.route('/currentuser/notifications/:id')
+		.get(UserController.deleteCurrentUserNotificaion)
 
 	app.route('/users/:id')
 		.get(UserController.getUser)
