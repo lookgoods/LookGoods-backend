@@ -20,19 +20,19 @@ export default {
 		}),
 
 	getUserList: (req, res) => User.find({})
-		.exec((err, user) => {
+		.lean().exec((err, user) => {
 			if (err) res.send(err)
 			res.json(user)
 		}),
 
 	getUser: (req, res) => User.find({ _id: req.params.id })
-		.exec((err, user) => {
+		.lean().exec((err, user) => {
 			if (err) res.send(err)
 			res.json(user[0])
 		}),
 
 	getCurrentUser: (req, res) => User.find({ _id: req.session.user_id })
-		.exec((err, currentUser) => {
+		.lean().exec((err, currentUser) => {
 			if (err) res.send(err)
 			res.json(currentUser[0])
 		}),
@@ -41,7 +41,7 @@ export default {
 		.populate('saved_post_list')
 		.populate({path: 'saved_post_list', populate: {path: 'user', select: 'name picture_url'}})
 		.populate({path: 'saved_post_list', populate: {path: 'product'}})
-		.exec((err, user) => {
+		.lean().exec((err, user) => {
 			if (err) res.send(err)
 			res.json(user[0].save_post_list)
 		}),
@@ -50,7 +50,7 @@ export default {
 		.populate('saved_post_list')
 		.populate({path: 'saved_post_list', populate: {path: 'user', select: 'name picture_url'}})
 		.populate({path: 'saved_post_list', populate: {path: 'product'}})
-		.exec((err, currentUser) => {
+		.lean().exec((err, currentUser) => {
 			if (err) res.send(err)
 			res.json(currentUser[0].save_post_list)
 		}),
@@ -59,7 +59,7 @@ export default {
 		.populate('own_post_list')
 		.populate({path: 'own_post_list', populate: {path: 'user', select: 'name picture_url'}})
 		.populate({path: 'own_post_list', populate: {path: 'product'}})
-		.exec((err, user) => {
+		.lean().exec((err, user) => {
 			if (err) res.send(err)
 			res.json(user[0].own_post_list)
 		}),
@@ -68,63 +68,61 @@ export default {
 		.populate('own_post_list')
 		.populate({path: 'own_post_list', populate: {path: 'user', select: 'name picture_url'}})
 		.populate({path: 'own_post_list', populate: {path: 'product'}})
-		.exec((err, currentUser) => {
+		.lean().exec((err, currentUser) => {
 			if (err) res.send(err)
 			res.json(currentUser[0].own_post_list)
 		}),
 
 	getUserCommentList: (req, res) => User.find({ _id: req.params.id })
 		.populate('comment_list')
-		.exec((err, user) => {
+		.populate({path: 'comment_list', populate: {path: 'user', select: 'name picture_url'}})
+		.lean().exec((err, user) => {
 			if (err) res.send(err)
 			res.json(user[0].comment_list)
 		}),
 
 	getCurrentUserCommentList: (req, res) => User.find({ _id: req.session.user_id })
 		.populate('comment_list')
-		.exec((err, currentUser) => {
+		.populate({path: 'comment_list', populate: {path: 'user', select: 'name picture_url'}})
+		.lean().exec((err, currentUser) => {
 			if (err) res.send(err)
 			res.json(currentUser[0].comment_list)
 		}),
 
-	getUserFollower: (req, res) => User.find({ _id: req.params.id }, (err, user) => {
-		if (err) res.send(err)
-		User.find({_id: { $in: user[0].follower_list }}, (err, userList) => {
+	getUserFollower: (req, res) => User.find({ _id: req.params.id })
+		.populate('follower_list', 'name picture_url')
+		.lean().exec((err, user) => {
 			if (err) res.send(err)
-			res.json(userList)
-		})
-	}),
+			res.send(user[0].follower_list)
+		}),
 
-	getCurrentUserFollower: (req, res) => User.find({ _id: req.session.user_id }, (err, currentUser) => {
-		if (err) res.send(err)
-		User.find({_id: { $in: currentUser[0].follower_list }}, (err, userList) => {
+	getCurrentUserFollower: (req, res) => User.find({ _id: req.session.user_id })
+		.populate('follower_list', 'name picture_url')
+		.lean().exec((err, currentUser) => {
 			if (err) res.send(err)
-			res.json(userList)
-		})
-	}),
+			res.send(currentUser[0].follower_list)
+		}),
 
-	getUserFollowing: (req, res) => User.find({ _id: req.params.id }, (err, user) => {
-		if (err) res.send(err)
-		User.find({_id: { $in: user[0].following_list }}, (err, userList) => {
+	getUserFollowing: (req, res) => User.find({ _id: req.params.id })
+		.populate('following_list', 'name picture_url')
+		.lean().exec((err, user) => {
 			if (err) res.send(err)
-			res.json(userList)
-		})
-	}),
+			res.send(user[0].following_list)
+		}),
 
-	getCurrentUserFollowing: (req, res) => User.find({ _id: req.session.user_id }, (err, currentUser) => {
-		if (err) res.send(err)
-		User.find({_id: { $in: currentUser[0].following_list }}, (err, userList) => {
+	getCurrentUserFollowing: (req, res) => User.find({ _id: req.session.user_id })
+		.populate('following_list', 'name picture_url')
+		.lean().exec((err, currentUser) => {
 			if (err) res.send(err)
-			res.json(userList)
-		})
-	}),
+			res.send(currentUser[0].following_list)
+		}),
 
 	followUser: (req, res) => User.find(
 		{
 			_id: req.session.user_id,
 			following_list: req.params.id
 		})
-		.exec((err, currentUser) => {
+		.lean().exec((err, currentUser) => {
 			if (err) res.send(err)
 			if (currentUser.length === 0) {
 				User.update(
@@ -156,7 +154,7 @@ export default {
 			_id: req.session.user_id,
 			following_list: req.params.id
 		})
-		.exec((err, currentUser) => {
+		.lean().exec((err, currentUser) => {
 			if (err) res.send(err)
 			if (currentUser.length === 0) {
 				res.json(currentUser)
@@ -186,7 +184,7 @@ export default {
 	getCurrentUserNotification: (req, res) => User.find({ _id: req.session.user_id })
 		.populate('notification.item', 'title picture_cover_url')
 		.populate('notification.user', 'name picture_url')
-		.exec((err, currentUser) => {
+		.lean().exec((err, currentUser) => {
 			if (err) res.send(err)
 			res.send(currentUser[0].notification)
 		}),

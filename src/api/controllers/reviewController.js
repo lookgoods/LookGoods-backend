@@ -7,7 +7,7 @@ export default {
 	getReviewList: (req, res) => Review.find({})
 		.populate('user', 'name picture_url')
 		.populate('product')
-		.exec((err, reviewList) => {
+		.lean().exec((err, reviewList) => {
 			if (err) res.send(err)
 			res.json(reviewList)
 		}),
@@ -15,39 +15,41 @@ export default {
 	getReview: (req, res) => Review.find({ _id: req.params.id })
 		.populate('user', 'name picture_url')
 		.populate('product')
-		.exec((err, review) => {
+		.lean().exec((err, review) => {
 			if (err) res.send(err)
 			res.json(review[0])
 		}),
 
 	getCurrentUserFollowingReview: (req, res) => User.find({ _id: req.session.user_id })
-		.exec((err, currentUser) => {
+		.lean().exec((err, currentUser) => {
 			if (err) res.send(err)
 			Review.find({user: { $in: currentUser[0].following_list }})
 				.populate('user', 'name picture_url')
 				.populate('product')
-				.exec((err, reviewList) => {
+				.lean().exec((err, reviewList) => {
 					if (err) res.send(err)
 					res.json(reviewList)
 				})
 		}),
 
 	getUserFollowingReview: (req, res) => User.find({ _id: req.params.id })
-		.exec((err, user) => {
+		.lean().exec((err, user) => {
 			if (err) res.send(err)
 			Review.find({user: { $in: user[0].following_list }})
 				.populate('user', 'name picture_url')
 				.populate('product')
-				.exec((err, reviewList) => {
+				.lean().exec((err, reviewList) => {
 					if (err) res.send(err)
 					res.json(reviewList)
 				})
 		}),
 
-	createReview: (req, res) => Product.find({ name: req.body.name })
+	createReview: (req, res) => Product.find({ name: req.body.name, brand: req.body.brand })
 		.exec((err, product) => {
 			if (err) res.send(err)
+			console.log(product)
 			if (product.length === 0) {
+				console.log('create new product')
 				const productInfo = {
 					name: req.body.name,
 					tag: req.body.tag,
@@ -70,6 +72,7 @@ export default {
 						available: 1
 					}
 					const newReview = new Review(reviewInfo)
+					console.log('create new review')
 					newReview.save((err, review) => {
 						if (err) res.send(err)
 						User.update(
@@ -79,19 +82,22 @@ export default {
 								$push: { own_post_list: review._id }
 							}, (err, updated) => {
 								if (err) res.send(err)
+								console.log('next step is notification')
 								User.update(
 									{
-										following_list: { $in: req.session.user_id }
+										following_list: req.session.user_id
 									}, {
 										$push: { notification: { user: req.session.user_id, type: 'Review', item: review._id } }
 									}, { multi: true }, (err, userUpdated) => {
 										if (err) res.send(err)
-										res.json(review)
+										console.log(review)
+										res.send(review)
 									})
 							})
 					})
 				})
 			} else {
+				console.log('old product')
 				const reviewInfo = {
 					user: req.session.user_id,
 					title: req.body.title,
@@ -153,7 +159,7 @@ export default {
 		}
 	),
 
-	editReview: (req, res) => Product.find({name: req.body.name})
+	editReview: (req, res) => Product.find({name: req.body.name, brand: req.body.brand})
 		.exec((err, product) => {
 			if (err) res.send(err)
 			if (product.length === 0) {
