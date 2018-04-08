@@ -52,7 +52,6 @@ export default {
 				console.log('create new product')
 				const productInfo = {
 					name: req.body.name,
-					tag: req.body.tag,
 					brand: req.body.brand
 				}
 				const newProduct = new Product(productInfo)
@@ -69,7 +68,8 @@ export default {
 						comment_list: req.body.comment_list,
 						like_by_list: req.body.like_by_list,
 						rating: req.body.rating,
-						available: 1
+						available: 1,
+						tag: req.body.tag
 					}
 					const newReview = new Review(reviewInfo)
 					console.log('create new review')
@@ -108,7 +108,8 @@ export default {
 					comment_list: req.body.comment_list,
 					like_by_list: req.body.like_by_list,
 					rating: req.body.rating,
-					available: 1
+					available: 1,
+					tag: req.body.tag
 				}
 				const newReview = new Review(reviewInfo)
 				newReview.save((err, review) => {
@@ -165,7 +166,6 @@ export default {
 			if (product.length === 0) {
 				const productInfo = {
 					name: req.body.name,
-					tag: req.body.tag,
 					brand: req.body.brand
 				}
 				const newProduct = new Product(productInfo)
@@ -182,7 +182,8 @@ export default {
 						product: product._id,
 						price: req.body.price,
 						rating: req.body.rating,
-						available: 1
+						available: 1,
+						tag: req.body.tag
 					}, (err, updated) => {
 						if (err) res.send(err)
 						res.send(updated)
@@ -200,7 +201,8 @@ export default {
 					product: product[0]._id,
 					price: req.body.price,
 					rating: req.body.rating,
-					available: 1
+					available: 1,
+					tag: req.body.tag
 				}, (err, updated) => {
 					if (err) res.send(err)
 					res.send(updated)

@@ -12,7 +12,8 @@ const ReviewSchema = new Schema({
 	like_by_list: [{ type: Schema.Types.ObjectId, ref: 'User' }],
 	rating: Number,
 	timestamp: { type: Date, default: Date.now },
-	available: Boolean
+	available: Boolean,
+	tag: []
 
 })
 
