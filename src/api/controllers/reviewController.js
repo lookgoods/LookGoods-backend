@@ -47,9 +47,7 @@ export default {
 	createReview: (req, res) => Product.find({ name: req.body.name, brand: req.body.brand })
 		.exec((err, product) => {
 			if (err) res.send(err)
-			console.log(product)
 			if (product.length === 0) {
-				console.log('create new product')
 				const productInfo = {
 					name: req.body.name,
 					brand: req.body.brand
@@ -72,7 +70,6 @@ export default {
 						tag: req.body.tag
 					}
 					const newReview = new Review(reviewInfo)
-					console.log('create new review')
 					newReview.save((err, review) => {
 						if (err) res.send(err)
 						User.update(
@@ -82,7 +79,6 @@ export default {
 								$push: { own_post_list: review._id }
 							}, (err, updated) => {
 								if (err) res.send(err)
-								console.log('next step is notification')
 								User.update(
 									{
 										following_list: req.session.user_id
@@ -90,14 +86,12 @@ export default {
 										$push: { notification: { user: req.session.user_id, type: 'Review', item: review._id } }
 									}, { multi: true }, (err, userUpdated) => {
 										if (err) res.send(err)
-										console.log(review)
 										res.send(review)
 									})
 							})
 					})
 				})
 			} else {
-				console.log('old product')
 				const reviewInfo = {
 					user: req.session.user_id,
 					title: req.body.title,
@@ -128,7 +122,6 @@ export default {
 									$push: { notification: { user: req.session.user_id, type: 'Review', item: review._id } }
 								}, { multi: true }, (err, userUpdated) => {
 									if (err) res.send(err)
-									console.log(userUpdated)
 									res.json(review)
 								})
 						})
