@@ -1,8 +1,9 @@
 import Mongoose, { Schema } from 'mongoose'
 
 const subNotification = new Schema({
-	kind: String,
-	item: { type: Schema.Types.ObjectId, refPath: 'notification.kind' }
+	user: { type: Schema.Types.ObjectId, ref: 'User' },
+	type: String,
+	item: { type: Schema.Types.ObjectId, ref: 'Review' }
 }, { _id: false })
 
 const UserSchema = new Schema({

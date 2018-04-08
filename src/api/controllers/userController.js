@@ -184,8 +184,8 @@ export default {
 		}),
 
 	getCurrentUserNotification: (req, res) => User.find({ _id: req.session.user_id })
-		.populate('notification.item')
-		.populate({path: 'notification.item', populate: {path: 'user', select: 'name picture_url'}})
+		.populate('notification.item', 'title picture_cover_url')
+		.populate('notification.user', 'name picture_url')
 		.exec((err, currentUser) => {
 			if (err) res.send(err)
 			res.send(currentUser[0].notification)
