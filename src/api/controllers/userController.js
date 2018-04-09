@@ -43,7 +43,7 @@ export default {
 		.populate({path: 'saved_post_list', populate: {path: 'product'}})
 		.lean().exec((err, user) => {
 			if (err) res.send(err)
-			res.json(user[0].save_post_list)
+			res.json(user[0].saved_post_list)
 		}),
 
 	getCurrentUserSavePostList: (req, res) => User.find({ _id: req.session.user_id })
@@ -52,7 +52,7 @@ export default {
 		.populate({path: 'saved_post_list', populate: {path: 'product'}})
 		.lean().exec((err, currentUser) => {
 			if (err) res.send(err)
-			res.json(currentUser[0].save_post_list)
+			res.json(currentUser[0].saved_post_list)
 		}),
 
 	getUserOwnPostList: (req, res) => User.find({ _id: req.params.id })
