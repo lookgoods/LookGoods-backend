@@ -126,4 +126,7 @@ export default app => {
 	app.route('/reviews/:id/comments/:cid')
 		.put(CommentController.editComment)
 		.delete(CommentController.deleteComment)
+
+	app.route('/users/search/:key')
+		.get(UserController.searchUser)
 }
