@@ -30,7 +30,7 @@ export default {
 	getPageUserList: (req, res) => User.paginate({},
 		{
 			page: req.params.pid,
-			limit: 10
+			limit: parseInt(req.params.psize, 10)
 		}, (err, user) => {
 			if (err) res.send(err)
 			res.json(user.docs)
@@ -63,7 +63,7 @@ export default {
 			Review.paginate({ _id: {$in: user[0].saved_post_list} },
 				{
 					page: req.params.pid,
-					limit: 3,
+					limit: parseInt(req.params.psize, 10),
 					populate: [{path: 'user', select: 'name picture_url'}, 'product']
 				}, (err, review) => {
 					if (err) res.send(err)
@@ -86,7 +86,7 @@ export default {
 			Review.paginate({ _id: {$in: currentUser[0].saved_post_list} },
 				{
 					page: req.params.pid,
-					limit: 3,
+					limit: parseInt(req.params.psize, 10),
 					populate: [{path: 'user', select: 'name picture_url'}, 'product']
 				}, (err, review) => {
 					if (err) res.send(err)
@@ -109,7 +109,7 @@ export default {
 			Review.paginate({ _id: {$in: user[0].own_post_list} },
 				{
 					page: req.params.pid,
-					limit: 3,
+					limit: parseInt(req.params.psize, 10),
 					populate: [{path: 'user', select: 'name picture_url'}, 'product']
 				}, (err, review) => {
 					if (err) res.send(err)
@@ -132,7 +132,7 @@ export default {
 			Review.paginate({ _id: {$in: currentUser[0].own_post_list} },
 				{
 					page: req.params.pid,
-					limit: 3,
+					limit: parseInt(req.params.psize, 10),
 					populate: [{path: 'user', select: 'name picture_url'}, 'product']
 				}, (err, review) => {
 					if (err) res.send(err)
@@ -154,7 +154,7 @@ export default {
 			Comment.paginate({ _id: {$in: user[0].comment_list} },
 				{
 					page: req.params.pid,
-					limit: 3,
+					limit: parseInt(req.params.psize, 10),
 					populate: {path: 'user', select: 'name picture_url'}
 				}, (err, review) => {
 					if (err) res.send(err)
@@ -176,7 +176,7 @@ export default {
 			Comment.paginate({ _id: {$in: currentUser[0].comment_list} },
 				{
 					page: req.params.pid,
-					limit: 3,
+					limit: parseInt(req.params.psize, 10),
 					populate: {path: 'user', select: 'name picture_url'}
 				}, (err, review) => {
 					if (err) res.send(err)
@@ -197,7 +197,7 @@ export default {
 			User.paginate({ _id: {$in: user[0].follower_list} },
 				{
 					page: req.params.pid,
-					limit: 3,
+					limit: parseInt(req.params.psize, 10),
 					select: 'name picture_url'
 				}, (err, follower) => {
 					if (err) res.send(err)
@@ -218,7 +218,7 @@ export default {
 			User.paginate({ _id: {$in: currentUser[0].follower_list} },
 				{
 					page: req.params.pid,
-					limit: 3,
+					limit: parseInt(req.params.psize, 10),
 					select: 'name picture_url'
 				}, (err, follower) => {
 					if (err) res.send(err)
@@ -239,7 +239,7 @@ export default {
 			User.paginate({ _id: {$in: user[0].following_list} },
 				{
 					page: req.params.pid,
-					limit: 3,
+					limit: parseInt(req.params.psize, 10),
 					select: 'name picture_url'
 				}, (err, following) => {
 					if (err) res.send(err)
@@ -260,7 +260,7 @@ export default {
 			User.paginate({ _id: {$in: currentUser[0].following_list} },
 				{
 					page: req.params.pid,
-					limit: 3,
+					limit: parseInt(req.params.psize, 10),
 					select: 'name picture_url'
 				}, (err, following) => {
 					if (err) res.send(err)

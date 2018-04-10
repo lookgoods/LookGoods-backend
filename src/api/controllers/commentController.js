@@ -51,6 +51,20 @@ export default {
 			res.send(review[0].comment_list)
 		}),
 
+	getPageReviewCommentList: (req, res) => Review.find({ _id: req.params.id })
+		.exec((err, review) => {
+			if (err) res.send(err)
+			Comment.paginate({ _id: {$in: review[0].comment_list} },
+				{
+					page: req.params.pid,
+					limit: parseInt(req.params.psize, 10),
+					populate: {path: 'user', select: 'name picture_url'}
+				}, (err, commentList) => {
+					if (err) res.send(err)
+					res.json(commentList)
+				})
+		}),
+
 	editComment: (req, res) => Comment.update(
 		{
 			_id: req.params.cid,

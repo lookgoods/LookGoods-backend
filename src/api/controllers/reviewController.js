@@ -15,7 +15,7 @@ export default {
 	getPageReviewList: (req, res) => Review.paginate({ available: true },
 		{
 			page: req.params.pid,
-			limit: 3,
+			limit: parseInt(req.params.psize, 10),
 			populate: [{path: 'user', select: 'name picture_url'}, 'product']
 		}, (err, reviewList) => {
 			if (err) res.send(err)
@@ -48,7 +48,7 @@ export default {
 			Review.paginate({ user: {$in: currentUser[0].following_list}, available: true },
 				{
 					page: req.params.pid,
-					limit: 3,
+					limit: parseInt(req.params.psize, 10),
 					populate: [{path: 'user', select: 'name picture_url'}, 'product']
 				}, (err, review) => {
 					if (err) res.send(err)
@@ -74,7 +74,7 @@ export default {
 			Review.paginate({ user: {$in: user[0].following_list}, available: true },
 				{
 					page: req.params.pid,
-					limit: 3,
+					limit: parseInt(req.params.psize, 10),
 					populate: [{path: 'user', select: 'name picture_url'}, 'product']
 				}, (err, review) => {
 					if (err) res.send(err)
