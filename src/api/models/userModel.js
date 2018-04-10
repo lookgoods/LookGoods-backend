@@ -1,4 +1,5 @@
 import Mongoose, { Schema } from 'mongoose'
+import MongoosePaginate from 'mongoose-paginate'
 
 const subNotification = new Schema({
 	user: { type: Schema.Types.ObjectId, ref: 'User' },
@@ -18,5 +19,7 @@ const UserSchema = new Schema({
 	notification: [subNotification],
 	description: String
 })
+
+UserSchema.plugin(MongoosePaginate)
 
 export default Mongoose.model('User', UserSchema)

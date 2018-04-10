@@ -1,4 +1,6 @@
 import User from '../models/userModel'
+import Review from '../models/reviewModel'
+import Comment from '../models/commentModel'
 
 export default {
 	createUser: (req, res) => {
@@ -25,6 +27,15 @@ export default {
 			res.json(user)
 		}),
 
+	getPageUserList: (req, res) => User.paginate({},
+		{
+			page: req.params.pid,
+			limit: 10
+		}, (err, user) => {
+			if (err) res.send(err)
+			res.json(user.docs)
+		}),
+
 	getUser: (req, res) => User.find({ _id: req.params.id })
 		.lean().exec((err, user) => {
 			if (err) res.send(err)
@@ -46,6 +57,20 @@ export default {
 			res.json(user[0].saved_post_list)
 		}),
 
+	getPageUserSavePostList: (req, res) => User.find({ _id: req.params.id })
+		.lean().exec((err, user) => {
+			if (err) res.send(err)
+			Review.paginate({ _id: {$in: user[0].saved_post_list} },
+				{
+					page: req.params.pid,
+					limit: 3,
+					populate: [{path: 'user', select: 'name picture_url'}, 'product']
+				}, (err, review) => {
+					if (err) res.send(err)
+					res.send(review)
+				})
+		}),
+
 	getCurrentUserSavePostList: (req, res) => User.find({ _id: req.session.user_id })
 		.populate('saved_post_list')
 		.populate({path: 'saved_post_list', populate: {path: 'user', select: 'name picture_url'}})
@@ -53,6 +78,20 @@ export default {
 		.lean().exec((err, currentUser) => {
 			if (err) res.send(err)
 			res.json(currentUser[0].saved_post_list)
+		}),
+
+	getPageCurrentUserSavePostList: (req, res) => User.find({ _id: req.session.user_id })
+		.lean().exec((err, currentUser) => {
+			if (err) res.send(err)
+			Review.paginate({ _id: {$in: currentUser[0].saved_post_list} },
+				{
+					page: req.params.pid,
+					limit: 3,
+					populate: [{path: 'user', select: 'name picture_url'}, 'product']
+				}, (err, review) => {
+					if (err) res.send(err)
+					res.send(review)
+				})
 		}),
 
 	getUserOwnPostList: (req, res) => User.find({ _id: req.params.id })
@@ -64,6 +103,20 @@ export default {
 			res.json(user[0].own_post_list)
 		}),
 
+	getPageUserOwnPostList: (req, res) => User.find({ _id: req.params.id })
+		.lean().exec((err, user) => {
+			if (err) res.send(err)
+			Review.paginate({ _id: {$in: user[0].own_post_list} },
+				{
+					page: req.params.pid,
+					limit: 3,
+					populate: [{path: 'user', select: 'name picture_url'}, 'product']
+				}, (err, review) => {
+					if (err) res.send(err)
+					res.send(review)
+				})
+		}),
+
 	getCurrentUserOwnPostList: (req, res) => User.find({ _id: req.session.user_id })
 		.populate('own_post_list')
 		.populate({path: 'own_post_list', populate: {path: 'user', select: 'name picture_url'}})
@@ -71,6 +124,20 @@ export default {
 		.lean().exec((err, currentUser) => {
 			if (err) res.send(err)
 			res.json(currentUser[0].own_post_list)
+		}),
+
+	getPageCurrentUserOwnPostList: (req, res) => User.find({ _id: req.session.user_id })
+		.lean().exec((err, currentUser) => {
+			if (err) res.send(err)
+			Review.paginate({ _id: {$in: currentUser[0].own_post_list} },
+				{
+					page: req.params.pid,
+					limit: 3,
+					populate: [{path: 'user', select: 'name picture_url'}, 'product']
+				}, (err, review) => {
+					if (err) res.send(err)
+					res.send(review)
+				})
 		}),
 
 	getUserCommentList: (req, res) => User.find({ _id: req.params.id })
@@ -81,12 +148,40 @@ export default {
 			res.json(user[0].comment_list)
 		}),
 
+	getPageUserCommentList: (req, res) => User.find({ _id: req.params.id })
+		.lean().exec((err, user) => {
+			if (err) res.send(err)
+			Comment.paginate({ _id: {$in: user[0].comment_list} },
+				{
+					page: req.params.pid,
+					limit: 3,
+					populate: {path: 'user', select: 'name picture_url'}
+				}, (err, review) => {
+					if (err) res.send(err)
+					res.send(review)
+				})
+		}),
+
 	getCurrentUserCommentList: (req, res) => User.find({ _id: req.session.user_id })
 		.populate('comment_list')
 		.populate({path: 'comment_list', populate: {path: 'user', select: 'name picture_url'}})
 		.lean().exec((err, currentUser) => {
 			if (err) res.send(err)
 			res.json(currentUser[0].comment_list)
+		}),
+
+	getPageCurrentUserCommentList: (req, res) => User.find({ _id: req.session.user_id })
+		.lean().exec((err, currentUser) => {
+			if (err) res.send(err)
+			Comment.paginate({ _id: {$in: currentUser[0].comment_list} },
+				{
+					page: req.params.pid,
+					limit: 3,
+					populate: {path: 'user', select: 'name picture_url'}
+				}, (err, review) => {
+					if (err) res.send(err)
+					res.send(review)
+				})
 		}),
 
 	getUserFollower: (req, res) => User.find({ _id: req.params.id })
@@ -96,11 +191,39 @@ export default {
 			res.send(user[0].follower_list)
 		}),
 
+	getPageUserFollower: (req, res) => User.find({ _id: req.params.id })
+		.lean().exec((err, user) => {
+			if (err) res.send(err)
+			User.paginate({ _id: {$in: user[0].follower_list} },
+				{
+					page: req.params.pid,
+					limit: 3,
+					select: 'name picture_url'
+				}, (err, follower) => {
+					if (err) res.send(err)
+					res.send(follower)
+				})
+		}),
+
 	getCurrentUserFollower: (req, res) => User.find({ _id: req.session.user_id })
 		.populate('follower_list', 'name picture_url')
 		.lean().exec((err, currentUser) => {
 			if (err) res.send(err)
 			res.send(currentUser[0].follower_list)
+		}),
+
+	getPageCurrentUserFollower: (req, res) => User.find({ _id: req.session.user_id })
+		.lean().exec((err, currentUser) => {
+			if (err) res.send(err)
+			User.paginate({ _id: {$in: currentUser[0].follower_list} },
+				{
+					page: req.params.pid,
+					limit: 3,
+					select: 'name picture_url'
+				}, (err, follower) => {
+					if (err) res.send(err)
+					res.send(follower)
+				})
 		}),
 
 	getUserFollowing: (req, res) => User.find({ _id: req.params.id })
@@ -110,11 +233,39 @@ export default {
 			res.send(user[0].following_list)
 		}),
 
+	getPageUserFollowing: (req, res) => User.find({ _id: req.params.id })
+		.lean().exec((err, user) => {
+			if (err) res.send(err)
+			User.paginate({ _id: {$in: user[0].following_list} },
+				{
+					page: req.params.pid,
+					limit: 3,
+					select: 'name picture_url'
+				}, (err, following) => {
+					if (err) res.send(err)
+					res.send(following)
+				})
+		}),
+
 	getCurrentUserFollowing: (req, res) => User.find({ _id: req.session.user_id })
 		.populate('following_list', 'name picture_url')
 		.lean().exec((err, currentUser) => {
 			if (err) res.send(err)
 			res.send(currentUser[0].following_list)
+		}),
+
+	getPageCurrentUserFollowing: (req, res) => User.find({ _id: req.session.user_id })
+		.lean().exec((err, currentUser) => {
+			if (err) res.send(err)
+			User.paginate({ _id: {$in: currentUser[0].following_list} },
+				{
+					page: req.params.pid,
+					limit: 3,
+					select: 'name picture_url'
+				}, (err, following) => {
+					if (err) res.send(err)
+					res.send(following)
+				})
 		}),
 
 	followUser: (req, res) => User.find(

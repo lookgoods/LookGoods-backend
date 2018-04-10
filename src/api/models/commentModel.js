@@ -1,4 +1,5 @@
 import Mongoose, { Schema } from 'mongoose'
+import MongoosePaginate from 'mongoose-paginate'
 
 const CommentSchema = new Schema({
 	description: String,
@@ -7,5 +8,7 @@ const CommentSchema = new Schema({
 	timestamp: { type: Date, default: Date.now }
 
 })
+
+CommentSchema.plugin(MongoosePaginate)
 
 export default Mongoose.model('Comment', CommentSchema)

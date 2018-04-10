@@ -7,7 +7,17 @@ export default {
 	getReviewList: (req, res) => Review.find({})
 		.populate('user', 'name picture_url')
 		.populate('product')
-		.lean().exec((err, reviewList) => {
+		.lean().exec((err, review) => {
+			if (err) res.send(err)
+			res.json(review[0])
+		}),
+
+	getPageReviewList: (req, res) => Review.paginate({ available: true },
+		{
+			page: req.params.pid,
+			limit: 3,
+			populate: [{path: 'user', select: 'name picture_url'}, 'product']
+		}, (err, reviewList) => {
 			if (err) res.send(err)
 			res.json(reviewList)
 		}),

@@ -26,16 +26,16 @@ Mongoose.connect(MONGO_URI)
 
 const MongoStore = ConnectMongo(Session)
 app.use(Session({
-    key: 'session',
-    secret: 'SUPER SECRET SECRET',
-    store: new MongoStore({
-        url: MONGO_URI
-    })
+	key: 'session',
+	secret: 'SUPER SECRET SECRET',
+	store: new MongoStore({
+		url: MONGO_URI
+	})
 }))
 
 app.use(BodyParser.urlencoded({ extended: true }))
 app.use(BodyParser.json())
 
-Routes(app) //register the route
+Routes(app) // register the route
 
-app.listen(port, () => console.log('LookGoods RESTful API server started on: ' + port))
+app.listen(port, () => console.log('LookGoods RESTful API server started on: ' + port, new Date()))

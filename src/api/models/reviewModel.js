@@ -1,4 +1,5 @@
 import Mongoose, { Schema } from 'mongoose'
+import MongoosePaginate from 'mongoose-paginate'
 
 const ReviewSchema = new Schema({
 	title: String,
@@ -16,5 +17,7 @@ const ReviewSchema = new Schema({
 	tag: []
 
 })
+
+ReviewSchema.plugin(MongoosePaginate)
 
 export default Mongoose.model('Review', ReviewSchema)
