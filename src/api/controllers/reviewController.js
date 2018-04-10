@@ -42,6 +42,20 @@ export default {
 				})
 		}),
 
+	getPageCurrentUserFollowingReview: (req, res) => User.find({ _id: req.session.user_id })
+		.lean().exec((err, currentUser) => {
+			if (err) res.send(err)
+			Review.paginate({ user: {$in: currentUser[0].following_list}, available: true },
+				{
+					page: req.params.pid,
+					limit: 3,
+					populate: [{path: 'user', select: 'name picture_url'}, 'product']
+				}, (err, review) => {
+					if (err) res.send(err)
+					res.send(review)
+				})
+		}),
+
 	getUserFollowingReview: (req, res) => User.find({ _id: req.params.id })
 		.lean().exec((err, user) => {
 			if (err) res.send(err)
@@ -51,6 +65,20 @@ export default {
 				.lean().exec((err, reviewList) => {
 					if (err) res.send(err)
 					res.json(reviewList)
+				})
+		}),
+
+	getPageUserFollowingReview: (req, res) => User.find({ _id: req.params.id })
+		.lean().exec((err, user) => {
+			if (err) res.send(err)
+			Review.paginate({ user: {$in: user[0].following_list}, available: true },
+				{
+					page: req.params.pid,
+					limit: 3,
+					populate: [{path: 'user', select: 'name picture_url'}, 'product']
+				}, (err, review) => {
+					if (err) res.send(err)
+					res.send(review)
 				})
 		}),
 
