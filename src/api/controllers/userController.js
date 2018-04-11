@@ -353,7 +353,7 @@ export default {
 	searchUser: (req, res) => User.aggregate([
 		{
 			$match: {
-				name: { $regex: req.params.key }
+				name: { $regex: new RegExp(req.body.key.toLowerCase(), 'i') }
 			}
 		},
 		{
@@ -363,7 +363,7 @@ export default {
 						{
 							$toLower: '$name'
 						},
-						req.params.key
+						req.body.key
 					]
 				}
 			}

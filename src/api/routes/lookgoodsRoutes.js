@@ -127,8 +127,10 @@ export default app => {
 		.put(CommentController.editComment)
 		.delete(CommentController.deleteComment)
 
-	app.route('/users/search/:key')
-		.get(UserController.searchUser)
-	app.route('/reviews/search/:key/tag')
-		.get(ReviewController.searchReviewByTag)
+	app.route('/users/search')
+		.post(UserController.searchUser)
+	app.route('/reviews/search/tag')
+		.post(ReviewController.searchReviewByTag)
+	app.route('/reviews/search')
+		.post(ReviewController.searchReview)
 }
