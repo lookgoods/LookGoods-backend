@@ -287,6 +287,35 @@ export default {
 		}, (err, updated) => {
 			if (err) res.send(err)
 			res.send(updated)
+		}),
+
+	searchReviewByTag: (req, res) => Review.aggregate([
+		{
+			$project: {
+				'name': '$product',
+				'index': {
+					$cond: [ { $in: [req.params.key, '$tag'] }, 1, -1 ]
+
+				}
+			}
+		},
+		{
+			$match: {
+				'index': 1
+			}
+		},
+		{
+			$sort: {
+				index: 1
+			}
+		}
+	])
+		.exec((err, review) => {
+			if (err) res.send(err)
+			Review.populate(review, {path: '_id', populate: [{path: 'user', select: 'name picture_url'}, {path: 'product'}]}, (err, popObject) => {
+				if (err) res.send(err)
+				res.send(review)
+			})
 		})
 
 }

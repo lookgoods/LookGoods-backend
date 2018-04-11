@@ -129,4 +129,6 @@ export default app => {
 
 	app.route('/users/search/:key')
 		.get(UserController.searchUser)
+	app.route('/reviews/search/:key/tag')
+		.get(ReviewController.searchReviewByTag)
 }
