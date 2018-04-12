@@ -290,16 +290,16 @@ export default {
 		}),
 
 	searchReviewByTag: (req, res) => {
-		console.log('search by tag')
+		console.log('search by tag req.body.key', req.body.key)
 		return Review.aggregate([
-			// {
-			// 	$match: { $text:
-			// 	{
-			// 		$search: req.body.key,
-			// 		$caseSensitive: false
-			// 	}
-			// 	}
-			// }
+			{
+				$match: { $text:
+				{
+					$search: req.body.key,
+					$caseSensitive: false
+				}
+				}
+			}
 			// {
 			// 	$project: {
 			// 		index: {
