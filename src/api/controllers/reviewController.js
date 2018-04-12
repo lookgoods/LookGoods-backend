@@ -291,56 +291,20 @@ export default {
 
 	searchReviewByTag: (req, res) => Review.aggregate([
 		{
-			$project: {
-				'index': {
-					$cond: [ { $in: [req.body.key, '$tag'] }, 1, -1 ]
+			$match: { $text:
+				{
+					$search: req.body.key,
+					$caseSensitive: false
 				}
 			}
 		},
 		{
-			$match: {
-				'index': {$gte: 1}
-			}
-		},
-		{
-			$sort: {
-				index: 1
-			}
-		}
-	])
-		.exec((err, review) => {
-			if (err) res.send(err)
-			Review.populate(review, {path: '_id', populate: [{path: 'user', select: 'name picture_url'}, {path: 'product'}]}, (err, popObject) => {
-				if (err) res.send(err)
-				res.send(review)
-			})
-		}),
-
-	searchReview: (req, res) => Review.aggregate([
-		// {
-		// 	$project: {
-		// 		index: {
-		// 			$cond: [ { $in: [req.body.key, '$tag'] }, 1, -1 ]
-		// 		}
-		// 	}
-		// },
-		{
-			$match: {
-				$or: [
-					// { 'index': {$gte: 1} },
-					{ title: { $regex: new RegExp(req.body.key.toLowerCase(), 'i') } }
-				]
-			}
-
-		},
-		{
 			$project: {
 				index: {
-					$indexOfCP: [
+					$cond: [
 						{
-							$toLower: '$title'
-						},
-						req.body.key
+							$in: [req.body.key, '$tag']
+						}, 1, -1
 					]
 				}
 			}
@@ -357,6 +321,108 @@ export default {
 				if (err) res.send(err)
 				res.send(review)
 			})
+		}),
+
+	searchReviewByTitle: (req, res) => Review.aggregate([
+		{
+
+			$match: {
+				$or: [{
+					$text: {
+						$search: req.body.key,
+						$caseSensitive: false
+					}
+				}, {
+					title: { $regex: new RegExp(req.body.key.toLowerCase(), 'i') }
+				}]
+			}
+		},
+		{
+			$project: {
+				index: {
+					$cond: [
+						{
+							$in: [req.body.key, '$tag']
+						}, 1, {$indexOfCP: [
+							{
+								$toLower: '$title'
+							},
+							req.body.key
+						]}
+					]
+				}
+			}
+		},
+		{
+			$sort: {
+				index: 1
+			}
+		}
+	])
+		.exec((err, review) => {
+			if (err) res.send(err)
+			Review.populate(review, {path: '_id', populate: [{path: 'user', select: 'name picture_url'}, {path: 'product'}]}, (err, popObject) => {
+				if (err) res.send(err)
+				res.send(review)
+			})
+		}),
+
+	searchReviewByProduct: (req, res) => Product.aggregate([
+		{
+			$project: {
+				index: {
+					$cond: [
+						{
+							$gte: [ {$indexOfCP: [
+								{
+									$toLower: '$name'
+								},
+								req.body.key
+							]}, 0 ]
+						}, {$indexOfCP: [
+							{
+								$toLower: '$name'
+							},
+							req.body.key
+						]}, {$cond: [
+							{
+								$gte: [ {$indexOfCP: [
+									{
+										$toLower: '$brand'
+									},
+									req.body.key
+								]}, 0 ]
+							}, {$indexOfCP: [
+								{
+									$toLower: '$brand'
+								},
+								req.body.key
+							]}, -1
+						]}
+					]
+				}
+			}
+		},
+		{
+			$match: {
+				index: { $gte: 0 }
+			}
+		},
+		{
+			$sort: {
+				index: 1
+			}
+		}
+	])
+		.exec((err, product) => {
+			if (err) res.send(err)
+			Review.find({ product: { $in: product } })
+				.populate('user', 'name picture_url')
+				.populate('product')
+				.exec((err, popObject) => {
+					if (err) res.send(err)
+					res.send(popObject)
+				})
 		})
 
 }

@@ -352,11 +352,6 @@ export default {
 
 	searchUser: (req, res) => User.aggregate([
 		{
-			$match: {
-				name: { $regex: new RegExp(req.body.key.toLowerCase(), 'i') }
-			}
-		},
-		{
 			$project: {
 				index: {
 					$indexOfCP: [
@@ -366,6 +361,11 @@ export default {
 						req.body.key
 					]
 				}
+			}
+		},
+		{
+			$match: {
+				index: { $gte: 0 }
 			}
 		},
 		{

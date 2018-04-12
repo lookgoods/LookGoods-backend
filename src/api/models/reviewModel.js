@@ -19,5 +19,11 @@ const ReviewSchema = new Schema({
 })
 
 ReviewSchema.plugin(MongoosePaginate)
-
+ReviewSchema.index(
+	{
+		title: 1,
+		tag: 1,
+		product: 1
+	}
+)
 export default Mongoose.model('Review', ReviewSchema)

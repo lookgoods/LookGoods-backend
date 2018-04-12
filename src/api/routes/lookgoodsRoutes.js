@@ -132,5 +132,7 @@ export default app => {
 	app.route('/reviews/search/tag')
 		.post(ReviewController.searchReviewByTag)
 	app.route('/reviews/search')
-		.post(ReviewController.searchReview)
+		.post(ReviewController.searchReviewByTitle)
+	app.route('/reviews/search/products')
+		.post(ReviewController.searchReviewByProduct)
 }
