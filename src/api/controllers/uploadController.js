@@ -21,54 +21,56 @@ export function sendUploadToGCS (req, res, next) {
 		return
 	}
 
-	const originalName = `original/${Date.now()}-${req.file.originalname}`
-	const originalFile = bucket.file(originalName)
-
 	var picture = {
 		picture_url: null,
 		picture_thumbnail_url: null
 	}
 
-	const stream = originalFile.createWriteStream({
-		metadata: {
-			contentType: req.file.mimetype
-		}
-	})
+	const originalName = `original/${Date.now()}-${req.file.originalname}`
+	const originalFile = bucket.file(originalName)
 
-	stream.on('error', (err) => {
-		res.status(400).send(err)
-	})
+	sharp(req.file.buffer).resize(840).toBuffer().then((original) => {
+		const stream = originalFile.createWriteStream({
+			metadata: {
+				contentType: req.file.mimetype
+			}
+		})
 
-	stream.on('finish', () => {
-		originalFile.makePublic().then(() => {
-			const cloudStoragePublicUrl = getPublicUrl(originalName)
-			picture.picture_url = cloudStoragePublicUrl
+		stream.on('error', (err) => {
+			res.status(400).send(err)
+		})
 
-			const thumbnailName = `thumbnail/thumbnail-${Date.now()}-${req.file.originalname}`
-			const thumbnailFile = bucket.file(thumbnailName)
+		stream.on('finish', () => {
+			originalFile.makePublic().then(() => {
+				const cloudStoragePublicUrl = getPublicUrl(originalName)
+				picture.picture_url = cloudStoragePublicUrl
 
-			sharp(req.file.buffer).resize(360, 360).toBuffer().then((data) => {
-				const stream = thumbnailFile.createWriteStream({
-					metadata: {
-						contentType: req.file.mimetype
-					}
-				})
-				stream.on('error', (err) => {
-					res.status(400).send(err)
-				})
-				stream.on('finish', () => {
-					thumbnailFile.makePublic().then(() => {
-						const cloudStoragePublicUrl = getPublicUrl(thumbnailName)
-						picture.picture_thumbnail_url = cloudStoragePublicUrl
+				const thumbnailName = `thumbnail/thumbnail-${Date.now()}-${req.file.originalname}`
+				const thumbnailFile = bucket.file(thumbnailName)
 
-						res.status(200).send(picture)
+				sharp(req.file.buffer).resize(360, 360).toBuffer().then((data) => {
+					const stream = thumbnailFile.createWriteStream({
+						metadata: {
+							contentType: req.file.mimetype
+						}
 					})
-				})
+					stream.on('error', (err) => {
+						res.status(400).send(err)
+					})
+					stream.on('finish', () => {
+						thumbnailFile.makePublic().then(() => {
+							const cloudStoragePublicUrl = getPublicUrl(thumbnailName)
+							picture.picture_thumbnail_url = cloudStoragePublicUrl
 
-				stream.end(data)
+							res.status(200).send(picture)
+						})
+					})
+
+					stream.end(data)
+				})
 			})
 		})
-	})
 
-	stream.end(req.file.buffer)
+		stream.end(original)
+	})
 }
