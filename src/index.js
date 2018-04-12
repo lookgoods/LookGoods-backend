@@ -6,6 +6,8 @@ import Mongoose from 'mongoose'
 import Routes from './api/routes/lookgoodsRoutes'
 import Auth from './api/models/auth'
 import DotEnv from 'dotenv'
+// import Socket from 'socket-io-server'
+// import Http from 'http'
 
 DotEnv.config()
 
@@ -19,6 +21,14 @@ const app = Express()
 
 app.use(Auth.initialize())
 app.use(Auth.session())
+// const server = Http.Server(app)
+
+// Socket.init(server)
+// server.listen(port)
+
+// Socket.broadcast('ws-client-id', 'emit-client', {
+// 	data: []
+// })
 
 // mongoose instance connection url connection
 Mongoose.Promise = global.Promise
