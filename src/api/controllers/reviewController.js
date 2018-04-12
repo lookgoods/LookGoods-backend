@@ -319,8 +319,49 @@ export default {
 			if (err) res.send(err)
 			Review.populate(review, {path: '_id', populate: [{path: 'user', select: 'name picture_url'}, {path: 'product'}]}, (err, popObject) => {
 				if (err) res.send(err)
-				res.send(review)
+				res.send(popObject)
 			})
+		}),
+
+	searchPageReviewByTag: (req, res) => Review.aggregate([
+		{
+			$match: { $text:
+					{
+						$search: req.body.key,
+						$caseSensitive: false
+					}
+			}
+		},
+		{
+			$project: {
+				index: {
+					$cond: [
+						{
+							$in: [req.body.key, '$tag']
+						}, 1, -1
+					]
+				}
+			}
+		},
+		{
+			$sort: {
+				index: 1
+			}
+		}
+	])
+		.exec((err, review) => {
+			if (err) res.send(err)
+			Review.paginate(
+				{
+					_id: { $in: review }
+				}, {
+					page: req.params.pid,
+					limit: parseInt(req.params.psize, 10),
+					populate: [{path: 'user', select: 'name picture_url'}, {path: 'product'}]
+				}, (err, popObject) => {
+					if (err) res.send(err)
+					res.send(popObject)
+				})
 		}),
 
 	searchReviewByTitle: (req, res) => Review.aggregate([

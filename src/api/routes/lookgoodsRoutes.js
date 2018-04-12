@@ -131,6 +131,8 @@ export default app => {
 		.post(UserController.searchUser)
 	app.route('/search/reviews/tag')
 		.post(ReviewController.searchReviewByTag)
+	app.route('/search/reviews/tag/pages/:pid/:psize')
+		.post(ReviewController.searchPageReviewByTag)
 	app.route('/search/reviews')
 		.post(ReviewController.searchReviewByTitle)
 	app.route('/search/reviews/pages/:pid/:psize')
