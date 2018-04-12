@@ -290,15 +290,16 @@ export default {
 		}),
 
 	searchReviewByTag: (req, res) => {
+		console.log('search by tag')
 		return Review.aggregate([
-			{
-				$match: { $text:
-				{
-					$search: req.body.key,
-					$caseSensitive: false
-				}
-				}
-			}
+			// {
+			// 	$match: { $text:
+			// 	{
+			// 		$search: req.body.key,
+			// 		$caseSensitive: false
+			// 	}
+			// 	}
+			// }
 			// {
 			// 	$project: {
 			// 		index: {
@@ -318,10 +319,11 @@ export default {
 		])
 			.exec((err, review) => {
 				if (err) res.send(err)
-				Review.populate(review, {path: '_id', populate: [{path: 'user', select: 'name picture_url'}, {path: 'product'}]}, (err, popObject) => {
-					if (err) res.send(err)
-					res.send(popObject)
-				})
+				res.send(review)
+				// Review.populate(review, {path: '_id', populate: [{path: 'user', select: 'name picture_url'}, {path: 'product'}]}, (err, popObject) => {
+				// 	if (err) res.send(err)
+				// 	res.send(popObject)
+				// })
 			})
 	},
 
