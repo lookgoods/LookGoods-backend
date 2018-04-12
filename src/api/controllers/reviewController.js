@@ -4,12 +4,12 @@ import User from '../models/userModel'
 
 export default {
 
-	getReviewList: (req, res) => Review.find({})
+	getReviewList: (req, res) => Review.find({ available: true })
 		.populate('user', 'name picture_url')
 		.populate('product')
 		.lean().exec((err, review) => {
 			if (err) res.send(err)
-			res.json(review[0])
+			res.json(review)
 		}),
 
 	getPageReviewList: (req, res) => Review.paginate({ available: true },
@@ -361,10 +361,65 @@ export default {
 	])
 		.exec((err, review) => {
 			if (err) res.send(err)
-			Review.populate(review, {path: '_id', populate: [{path: 'user', select: 'name picture_url'}, {path: 'product'}]}, (err, popObject) => {
-				if (err) res.send(err)
-				res.send(review)
-			})
+			Review.populate(review,
+				{path: '_id',
+					populate: [{path: 'user', select: 'name picture_url'},
+						{path: 'product'}]}, (err, popObject) => {
+					if (err) res.send(err)
+					res.send(popObject)
+				})
+		}),
+
+	searchPageReviewByTitle: (req, res) => Review.aggregate([
+		{
+
+			$match: {
+				$or: [{
+					$text: {
+						$search: req.body.key,
+						$caseSensitive: false
+					}
+				}, {
+					title: { $regex: new RegExp(req.body.key.toLowerCase(), 'i') }
+				}]
+			}
+		},
+		{
+			$project: {
+				index: {
+					$cond: [
+						{
+							$in: [req.body.key, '$tag']
+						}, 1, {$indexOfCP: [
+							{
+								$toLower: '$title'
+							},
+							req.body.key
+						]}
+					]
+				}
+			}
+		},
+		{
+			$sort: {
+				index: 1
+			}
+		}
+	])
+		.exec((err, review) => {
+			if (err) res.send(err)
+			Review.paginate(
+				{
+					_id: { $in: review }
+				},
+				{
+					page: req.params.pid,
+					limit: parseInt(req.params.psize, 10),
+					populate: [{path: 'user', select: 'name picture_url'}, {path: 'product'}]
+				}, (err, popObject) => {
+					if (err) res.send(err)
+					res.send(popObject)
+				})
 		}),
 
 	searchReviewByProduct: (req, res) => Product.aggregate([
@@ -420,6 +475,69 @@ export default {
 				.populate('user', 'name picture_url')
 				.populate('product')
 				.exec((err, popObject) => {
+					if (err) res.send(err)
+					res.send(popObject)
+				})
+		}),
+
+	searchPageReviewByProduct: (req, res) => Product.aggregate([
+		{
+			$project: {
+				index: {
+					$cond: [
+						{
+							$gte: [ {$indexOfCP: [
+								{
+									$toLower: '$name'
+								},
+								req.body.key
+							]}, 0 ]
+						}, {$indexOfCP: [
+							{
+								$toLower: '$name'
+							},
+							req.body.key
+						]}, {$cond: [
+							{
+								$gte: [ {$indexOfCP: [
+									{
+										$toLower: '$brand'
+									},
+									req.body.key
+								]}, 0 ]
+							}, {$indexOfCP: [
+								{
+									$toLower: '$brand'
+								},
+								req.body.key
+							]}, -1
+						]}
+					]
+				}
+			}
+		},
+		{
+			$match: {
+				index: { $gte: 0 }
+			}
+		},
+		{
+			$sort: {
+				index: 1
+			}
+		}
+	])
+		.exec((err, product) => {
+			if (err) res.send(err)
+			Review.paginate(
+				{
+					product: { $in: product }
+				},
+				{
+					page: req.params.pid,
+					limit: parseInt(req.params.psize, 10),
+					populate: [{path: 'user', select: 'name picture_url'}, 'product']
+				}, (err, popObject) => {
 					if (err) res.send(err)
 					res.send(popObject)
 				})

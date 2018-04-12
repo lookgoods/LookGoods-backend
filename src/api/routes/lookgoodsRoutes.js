@@ -133,8 +133,12 @@ export default app => {
 		.post(ReviewController.searchReviewByTag)
 	app.route('/search/reviews')
 		.post(ReviewController.searchReviewByTitle)
+	app.route('/search/reviews/pages/:pid/:psize')
+		.post(ReviewController.searchPageReviewByTitle)
 	app.route('/search/reviews/products')
 		.post(ReviewController.searchReviewByProduct)
+	app.route('/search/reviews/products/pages/:pid/:psize')
+		.post(ReviewController.searchPageReviewByProduct)
 
 	app.route('/search/products')
 		.post(ReviewController.searchProductName)
