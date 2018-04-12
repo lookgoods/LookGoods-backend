@@ -423,6 +423,26 @@ export default {
 					if (err) res.send(err)
 					res.send(popObject)
 				})
+		}),
+
+	searchProductName: (req, res) => Product.find({ name: { $regex: new RegExp(req.body.key.toLowerCase(), 'i') } })
+		.select('name brand')
+		.exec((err, product) => {
+			if (err) res.send(err)
+			res.send(product)
+		}),
+
+	searchPageProductName: (req, res) => Product.paginate(
+		{
+			name: { $regex: new RegExp(req.body.key.toLowerCase(), 'i') }
+		},
+		{
+			page: req.params.pid,
+			limit: parseInt(req.params.psize, 10)
+		}, (err, product) => {
+			if (err) res.send(err)
+			console.log(product)
+			res.send(product)
 		})
 
 }

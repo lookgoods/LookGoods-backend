@@ -127,12 +127,17 @@ export default app => {
 		.put(CommentController.editComment)
 		.delete(CommentController.deleteComment)
 
-	app.route('/users/search')
+	app.route('/search/users')
 		.post(UserController.searchUser)
-	app.route('/reviews/search/tag')
+	app.route('/search/reviews/tag')
 		.post(ReviewController.searchReviewByTag)
-	app.route('/reviews/search')
+	app.route('/search/reviews')
 		.post(ReviewController.searchReviewByTitle)
-	app.route('/reviews/search/products')
+	app.route('/search/reviews/products')
 		.post(ReviewController.searchReviewByProduct)
+
+	app.route('/search/products')
+		.post(ReviewController.searchProductName)
+	app.route('/search/products/pages/:pid/:psize')
+		.post(ReviewController.searchPageProductName)
 }
