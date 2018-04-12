@@ -29,7 +29,7 @@ export function sendUploadToGCS (req, res, next) {
 	const originalName = `original/${Date.now()}-${req.file.originalname}`
 	const originalFile = bucket.file(originalName)
 
-	sharp(req.file.buffer).resize(840).toBuffer().then((original) => {
+	sharp(req.file.buffer).rotate().resize(840).toBuffer().then((original) => {
 		const stream = originalFile.createWriteStream({
 			metadata: {
 				contentType: req.file.mimetype
@@ -48,7 +48,7 @@ export function sendUploadToGCS (req, res, next) {
 				const thumbnailName = `thumbnail/thumbnail-${Date.now()}-${req.file.originalname}`
 				const thumbnailFile = bucket.file(thumbnailName)
 
-				sharp(req.file.buffer).resize(360, 360).toBuffer().then((data) => {
+				sharp(req.file.buffer).rotate().resize(360, 360).toBuffer().then((data) => {
 					const stream = thumbnailFile.createWriteStream({
 						metadata: {
 							contentType: req.file.mimetype
