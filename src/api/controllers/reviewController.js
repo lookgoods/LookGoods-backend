@@ -33,7 +33,11 @@ export default {
 	getCurrentUserFollowingReview: (req, res) => User.find({ _id: req.session.user_id })
 		.lean().exec((err, currentUser) => {
 			if (err) res.send(err)
-			Review.find({user: { $in: currentUser[0].following_list }})
+			Review.find(
+				{
+					user: { $in: [currentUser[0].following_list, currentUser._id] },
+					available: true
+				})
 				.populate('user', 'name picture_url')
 				.populate('product')
 				.lean().exec((err, reviewList) => {
@@ -45,7 +49,11 @@ export default {
 	getPageCurrentUserFollowingReview: (req, res) => User.find({ _id: req.session.user_id })
 		.lean().exec((err, currentUser) => {
 			if (err) res.send(err)
-			Review.paginate({ user: {$in: currentUser[0].following_list}, available: true },
+			Review.paginate(
+				{
+					user: {$in: [currentUser[0].following_list, currentUser._id]},
+					available: true
+				},
 				{
 					page: req.params.pid,
 					limit: parseInt(req.params.psize, 10),
@@ -59,7 +67,11 @@ export default {
 	getUserFollowingReview: (req, res) => User.find({ _id: req.params.id })
 		.lean().exec((err, user) => {
 			if (err) res.send(err)
-			Review.find({user: { $in: user[0].following_list }})
+			Review.find(
+				{
+					user: { $in: [user[0].following_list, user._id] },
+					available: true
+				})
 				.populate('user', 'name picture_url')
 				.populate('product')
 				.lean().exec((err, reviewList) => {
@@ -71,7 +83,11 @@ export default {
 	getPageUserFollowingReview: (req, res) => User.find({ _id: req.params.id })
 		.lean().exec((err, user) => {
 			if (err) res.send(err)
-			Review.paginate({ user: {$in: user[0].following_list}, available: true },
+			Review.paginate(
+				{
+					user: { $in: [user[0].following_list, user._id] },
+					available: true
+				},
 				{
 					page: req.params.pid,
 					limit: parseInt(req.params.psize, 10),
