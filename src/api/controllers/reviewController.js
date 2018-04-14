@@ -35,7 +35,7 @@ export default {
 			if (err) res.send(err)
 			Review.find(
 				{
-					user: { $in: [currentUser[0].following_list, currentUser._id] },
+					user: { $in: [currentUser[0].following_list, currentUser[0]._id] },
 					available: true
 				})
 				.populate('user', 'name picture_url')
@@ -51,7 +51,7 @@ export default {
 			if (err) res.send(err)
 			Review.paginate(
 				{
-					user: {$in: [currentUser[0].following_list, currentUser._id]},
+					user: {$in: [currentUser[0].following_list, currentUser[0]._id]},
 					available: true
 				},
 				{
@@ -69,7 +69,7 @@ export default {
 			if (err) res.send(err)
 			Review.find(
 				{
-					user: { $in: [user[0].following_list, user._id] },
+					user: { $in: [user[0].following_list, user[0]._id] },
 					available: true
 				})
 				.populate('user', 'name picture_url')
@@ -85,7 +85,7 @@ export default {
 			if (err) res.send(err)
 			Review.paginate(
 				{
-					user: { $in: [user[0].following_list, user._id] },
+					user: { $in: [user[0].following_list, user[0]._id] },
 					available: true
 				},
 				{
