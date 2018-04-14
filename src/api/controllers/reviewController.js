@@ -317,53 +317,15 @@ export default {
 			res.send(updated)
 		}),
 
-	searchReviewByTag: (req, res) => {
-		console.log('search by tag req.body.key', req.body.key)
-		return Review.aggregate([
-			{
-				$match: { $text:
-				{
-					$search: req.body.key,
-					$caseSensitive: false
-				}
-				}
-			}
-			// {
-			// 	$project: {
-			// 		index: {
-			// 			$cond: [
-			// 				{
-			// 					$in: [req.body.key, '$tag']
-			// 				}, 1, -1
-			// 			]
-			// 		}
-			// 	}
-			// },
-			// {
-			// 	$sort: {
-			// 		index: 1
-			// 	}
-			// }
-		])
-			.exec((err, review) => {
-				if (err) res.send(err)
-				res.send(review)
-				// Review.populate(review, {path: '_id', populate: [{path: 'user', select: 'name picture_url'}, {path: 'product'}]}, (err, popObject) => {
-				// 	if (err) res.send(err)
-				// 	res.send(popObject)
-				// })
-			})
-	},
-
-	searchPageReviewByTag: (req, res) => Review.aggregate([
-		{
-			$match: { $text:
-					{
-						$search: req.body.key,
-						$caseSensitive: false
-					}
-			}
-		},
+	searchReviewByTag: (req, res) => Review.aggregate([
+		// {
+		// 	$match: { $text:
+		// 	{
+		// 		$search: req.body.key,
+		// 		$caseSensitive: false
+		// 	}
+		// 	}
+		// },
 		{
 			$project: {
 				index: {
@@ -373,6 +335,50 @@ export default {
 						}, 1, -1
 					]
 				}
+			}
+		},
+		{
+			$match: {
+				index: { $gte: 0 }
+			}
+		},
+		{
+			$sort: {
+				index: 1
+			}
+		}
+	])
+		.exec((err, review) => {
+			if (err) res.send(err)
+			Review.populate(review, {path: '_id', populate: [{path: 'user', select: 'name picture_url'}, {path: 'product'}]}, (err, popObject) => {
+				if (err) res.send(err)
+				res.send(popObject)
+			})
+		}),
+
+	searchPageReviewByTag: (req, res) => Review.aggregate([
+		// {
+		// 	$match: { $text:
+		// 			{
+		// 				$search: req.body.key,
+		// 				$caseSensitive: false
+		// 			}
+		// 	}
+		// },
+		{
+			$project: {
+				index: {
+					$cond: [
+						{
+							$in: [req.body.key, '$tag']
+						}, 1, -1
+					]
+				}
+			}
+		},
+		{
+			$match: {
+				index: { $gte: 0 }
 			}
 		},
 		{
@@ -397,19 +403,19 @@ export default {
 		}),
 
 	searchReviewByTitle: (req, res) => Review.aggregate([
-		{
+		// {
 
-			$match: {
-				$or: [{
-					$text: {
-						$search: req.body.key,
-						$caseSensitive: false
-					}
-				}, {
-					title: { $regex: new RegExp(req.body.key.toLowerCase(), 'i') }
-				}]
-			}
-		},
+		// 	$match: {
+		// 		$or: [{
+		// 			$text: {
+		// 				$search: req.body.key,
+		// 				$caseSensitive: false
+		// 			}
+		// 		}, {
+		// 			title: { $regex: new RegExp(req.body.key.toLowerCase(), 'i') }
+		// 		}]
+		// 	}
+		// },
 		{
 			$project: {
 				index: {
@@ -424,6 +430,11 @@ export default {
 						]}
 					]
 				}
+			}
+		},
+		{
+			$match: {
+				index: { $gte: 0 }
 			}
 		},
 		{
@@ -444,19 +455,19 @@ export default {
 		}),
 
 	searchPageReviewByTitle: (req, res) => Review.aggregate([
-		{
+		// {
 
-			$match: {
-				$or: [{
-					$text: {
-						$search: req.body.key,
-						$caseSensitive: false
-					}
-				}, {
-					title: { $regex: new RegExp(req.body.key.toLowerCase(), 'i') }
-				}]
-			}
-		},
+		// 	$match: {
+		// 		$or: [{
+		// 			$text: {
+		// 				$search: req.body.key,
+		// 				$caseSensitive: false
+		// 			}
+		// 		}, {
+		// 			title: { $regex: new RegExp(req.body.key.toLowerCase(), 'i') }
+		// 		}]
+		// 	}
+		// },
 		{
 			$project: {
 				index: {
@@ -471,6 +482,11 @@ export default {
 						]}
 					]
 				}
+			}
+		},
+		{
+			$match: {
+				index: { $gte: 0 }
 			}
 		},
 		{
@@ -616,24 +632,123 @@ export default {
 				})
 		}),
 
-	searchProductName: (req, res) => Product.find({ name: { $regex: new RegExp(req.body.key.toLowerCase(), 'i') } })
-		.select('name brand')
-		.exec((err, product) => {
-			if (err) res.send(err)
-			res.send(product)
-		}),
-
-	searchPageProductName: (req, res) => Product.paginate(
+	searchProductName: (req, res) => Product.aggregate([
 		{
-			name: { $regex: new RegExp(req.body.key.toLowerCase(), 'i') }
+			$project: {
+				index: {
+					$cond: [
+						{
+							$gte: [ {$indexOfCP: [
+								{
+									$toLower: '$name'
+								},
+								req.body.key
+							]}, 0 ]
+						}, {$indexOfCP: [
+							{
+								$toLower: '$name'
+							},
+							req.body.key
+						]}, {$cond: [
+							{
+								$gte: [ {$indexOfCP: [
+									{
+										$toLower: '$brand'
+									},
+									req.body.key
+								]}, 0 ]
+							}, {$indexOfCP: [
+								{
+									$toLower: '$brand'
+								},
+								req.body.key
+							]}, -1
+						]}
+					]
+				}
+			}
 		},
 		{
-			page: req.params.pid,
-			limit: parseInt(req.params.psize, 10)
-		}, (err, product) => {
+			$match: {
+				index: { $gte: 0 }
+			}
+		},
+		{
+			$sort: {
+				index: 1
+			}
+		}
+	])
+		.exec((err, product) => {
 			if (err) res.send(err)
-			console.log(product)
-			res.send(product)
+			Product.find({ _id: { $in: product } })
+				.select('name brand')
+				.exec((err, popObject) => {
+					if (err) res.send(err)
+					res.send(popObject)
+				})
+		}),
+
+	searchPageProductName: (req, res) => Product.aggregate([
+		{
+			$project: {
+				index: {
+					$cond: [
+						{
+							$gte: [ {$indexOfCP: [
+								{
+									$toLower: '$name'
+								},
+								req.body.key
+							]}, 0 ]
+						}, {$indexOfCP: [
+							{
+								$toLower: '$name'
+							},
+							req.body.key
+						]}, {$cond: [
+							{
+								$gte: [ {$indexOfCP: [
+									{
+										$toLower: '$brand'
+									},
+									req.body.key
+								]}, 0 ]
+							}, {$indexOfCP: [
+								{
+									$toLower: '$brand'
+								},
+								req.body.key
+							]}, -1
+						]}
+					]
+				}
+			}
+		},
+		{
+			$match: {
+				index: { $gte: 0 }
+			}
+		},
+		{
+			$sort: {
+				index: 1
+			}
+		}
+	])
+		.exec((err, product) => {
+			if (err) res.send(err)
+			Product.paginate(
+				{
+					_id: { $in: product }
+				}, {
+					page: req.params.pid,
+					limit: parseInt(req.params.psize, 10),
+					select: 'name brand'
+				}, (err, popObject) => {
+					if (err) res.send(err)
+					res.send(popObject)
+				})
 		})
 
 }

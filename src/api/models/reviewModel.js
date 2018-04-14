@@ -2,7 +2,7 @@ import Mongoose, { Schema } from 'mongoose'
 import MongoosePaginate from 'mongoose-paginate'
 
 const ReviewSchema = new Schema({
-	title: String,
+	title: { type: String },
 	user: { type: Schema.Types.ObjectId, ref: 'User' },
 	picture_cover_url: String,
 	picture_thumbnail_url: String,
@@ -14,7 +14,7 @@ const ReviewSchema = new Schema({
 	rating: Number,
 	timestamp: { type: Date, default: Date.now },
 	available: Boolean,
-	tag: []
+	tag: [{ type: String }]
 
 })
 
@@ -22,8 +22,18 @@ ReviewSchema.plugin(MongoosePaginate)
 ReviewSchema.index(
 	{
 		title: 1,
-		tag: 1,
-		product: 1
-	}
+		tag: 1
+	},
+	{ default_language: 'english' }
 )
+
 export default Mongoose.model('Review', ReviewSchema)
+// const Review = Mongoose.model('Review', ReviewSchema)
+
+// Review.collection.getIndexes(['title', 'tag'], (err, result) => {
+// 	if (err) {
+// 		console.log('Error in dropping index!', err)
+// 	}
+// 	console.log(result)
+// })
+// export default Review
