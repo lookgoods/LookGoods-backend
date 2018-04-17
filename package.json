@@ -34,7 +34,8 @@
     "passport": "^0.4.0",
     "passport-facebook-token": "^3.3.0",
     "sharp": "^0.20.1",
-    "socket-io-server": "^1.0.5"
+    "socket-io-server": "^1.0.5",
+    "socket.io": "^2.1.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
