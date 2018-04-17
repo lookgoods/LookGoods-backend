@@ -426,7 +426,9 @@ export default {
 							{
 								$toLower: '$title'
 							},
-							req.body.key
+							{
+								$toLower: req.body.key
+							}
 						]}
 					]
 				}
@@ -478,7 +480,9 @@ export default {
 							{
 								$toLower: '$title'
 							},
-							req.body.key
+							{
+								$toLower: req.body.key
+							}
 						]}
 					]
 				}
@@ -521,26 +525,34 @@ export default {
 								{
 									$toLower: '$name'
 								},
-								req.body.key
+								{
+									$toLower: req.body.key
+								}
 							]}, 0 ]
 						}, {$indexOfCP: [
 							{
 								$toLower: '$name'
 							},
-							req.body.key
+							{
+								$toLower: req.body.key
+							}
 						]}, {$cond: [
 							{
 								$gte: [ {$indexOfCP: [
 									{
 										$toLower: '$brand'
 									},
-									req.body.key
+									{
+										$toLower: req.body.key
+									}
 								]}, 0 ]
 							}, {$indexOfCP: [
 								{
 									$toLower: '$brand'
 								},
-								req.body.key
+								{
+									$toLower: req.body.key
+								}
 							]}, -1
 						]}
 					]
@@ -579,26 +591,34 @@ export default {
 								{
 									$toLower: '$name'
 								},
-								req.body.key
+								{
+									$toLower: req.body.key
+								}
 							]}, 0 ]
 						}, {$indexOfCP: [
 							{
 								$toLower: '$name'
 							},
-							req.body.key
+							{
+								$toLower: req.body.key
+							}
 						]}, {$cond: [
 							{
 								$gte: [ {$indexOfCP: [
 									{
 										$toLower: '$brand'
 									},
-									req.body.key
+									{
+										$toLower: req.body.key
+									}
 								]}, 0 ]
 							}, {$indexOfCP: [
 								{
 									$toLower: '$brand'
 								},
-								req.body.key
+								{
+									$toLower: req.body.key
+								}
 							]}, -1
 						]}
 					]
@@ -642,26 +662,34 @@ export default {
 								{
 									$toLower: '$name'
 								},
-								req.body.key
+								{
+									$toLower: req.body.key
+								}
 							]}, 0 ]
 						}, {$indexOfCP: [
 							{
 								$toLower: '$name'
 							},
-							req.body.key
+							{
+								$toLower: req.body.key
+							}
 						]}, {$cond: [
 							{
 								$gte: [ {$indexOfCP: [
 									{
 										$toLower: '$brand'
 									},
-									req.body.key
+									{
+										$toLower: req.body.key
+									}
 								]}, 0 ]
 							}, {$indexOfCP: [
 								{
 									$toLower: '$brand'
 								},
-								req.body.key
+								{
+									$toLower: req.body.key
+								}
 							]}, -1
 						]}
 					]
@@ -699,26 +727,34 @@ export default {
 								{
 									$toLower: '$name'
 								},
-								req.body.key
+								{
+									$toLower: req.body.key
+								}
 							]}, 0 ]
 						}, {$indexOfCP: [
 							{
 								$toLower: '$name'
 							},
-							req.body.key
+							{
+								$toLower: req.body.key
+							}
 						]}, {$cond: [
 							{
 								$gte: [ {$indexOfCP: [
 									{
 										$toLower: '$brand'
 									},
-									req.body.key
+									{
+										$toLower: req.body.key
+									}
 								]}, 0 ]
 							}, {$indexOfCP: [
 								{
 									$toLower: '$brand'
 								},
-								req.body.key
+								{
+									$toLower: req.body.key
+								}
 							]}, -1
 						]}
 					]
