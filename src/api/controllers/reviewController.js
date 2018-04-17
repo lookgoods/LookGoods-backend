@@ -318,14 +318,6 @@ export default {
 		}),
 
 	searchReviewByTag: (req, res) => Review.aggregate([
-		// {
-		// 	$match: { $text:
-		// 	{
-		// 		$search: req.body.key,
-		// 		$caseSensitive: false
-		// 	}
-		// 	}
-		// },
 		{
 			$project: {
 				index: {
@@ -357,14 +349,6 @@ export default {
 		}),
 
 	searchPageReviewByTag: (req, res) => Review.aggregate([
-		// {
-		// 	$match: { $text:
-		// 			{
-		// 				$search: req.body.key,
-		// 				$caseSensitive: false
-		// 			}
-		// 	}
-		// },
 		{
 			$project: {
 				index: {
@@ -403,19 +387,6 @@ export default {
 		}),
 
 	searchReviewByTitle: (req, res) => Review.aggregate([
-		// {
-
-		// 	$match: {
-		// 		$or: [{
-		// 			$text: {
-		// 				$search: req.body.key,
-		// 				$caseSensitive: false
-		// 			}
-		// 		}, {
-		// 			title: { $regex: new RegExp(req.body.key.toLowerCase(), 'i') }
-		// 		}]
-		// 	}
-		// },
 		{
 			$project: {
 				index: {
@@ -457,19 +428,6 @@ export default {
 		}),
 
 	searchPageReviewByTitle: (req, res) => Review.aggregate([
-		// {
-
-		// 	$match: {
-		// 		$or: [{
-		// 			$text: {
-		// 				$search: req.body.key,
-		// 				$caseSensitive: false
-		// 			}
-		// 		}, {
-		// 			title: { $regex: new RegExp(req.body.key.toLowerCase(), 'i') }
-		// 		}]
-		// 	}
-		// },
 		{
 			$project: {
 				index: {
