@@ -392,7 +392,7 @@ export default {
 				index: {
 					$cond: [
 						{
-							$in: [req.body.key, '$tag']
+							$in: [{$toLower: req.body.key}, '$tag']
 						}, 1, {$indexOfCP: [
 							{
 								$toLower: '$title'
@@ -433,7 +433,7 @@ export default {
 				index: {
 					$cond: [
 						{
-							$in: [req.body.key, '$tag']
+							$in: [{$toLower: req.body.key}, '$tag']
 						}, 1, {$indexOfCP: [
 							{
 								$toLower: '$title'
