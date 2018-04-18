@@ -28,12 +28,3 @@ ReviewSchema.index(
 )
 
 export default Mongoose.model('Review', ReviewSchema)
-// const Review = Mongoose.model('Review', ReviewSchema)
-
-// Review.collection.getIndexes(['title', 'tag'], (err, result) => {
-// 	if (err) {
-// 		console.log('Error in dropping index!', err)
-// 	}
-// 	console.log(result)
-// })
-// export default Review

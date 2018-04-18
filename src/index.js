@@ -47,13 +47,11 @@ io.on('connection', (socket) => {
 	socket.on('notify', (data) => {
 		if (typeof data === 'string') {
 			var object = JSON.parse(data)
-			// console.log(object.followerList)
 			for (var i in object.followerList) {
 				var user = onlineUser.find(id => id.user_id === object.followerList[i])
 				if (user !== 'undefined') {
 					console.log('notify user ', user)
 					socket.to(user.id).emit('notify', (new Date()))
-					// console.log(new Date())
 				}
 			}
 		}
@@ -80,7 +78,7 @@ Routes(app) // register the route
 
 // app.listen(port, () => console.log('LookGoods RESTful API server started on: ' + port, new Date()))
 server.listen(port, () => {
-	console.log('Lookgoods listen on port 3000')
+	console.log('LookGoods RESTful API server started on: ' + port, new Date())
 })
 
 export default io

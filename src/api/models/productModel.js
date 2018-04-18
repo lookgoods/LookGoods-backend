@@ -17,12 +17,3 @@ ProductSchema.index(
 )
 
 export default Mongoose.model('Product', ProductSchema)
-// const Product = Mongoose.model('Product', ProductSchema)
-
-// Product.collection.getIndexes(['name', 'brand'], (err, result) => {
-// 	if (err) {
-// 		console.log('Error in dropping index!', err)
-// 	}
-// 	console.log(result)
-// })
-// export default Product
