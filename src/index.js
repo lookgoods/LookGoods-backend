@@ -36,19 +36,25 @@ io.on('connection', (socket) => {
 		console.log(onlineUser)
 	})
 	socket.on('authenUser', (data) => {
-		const user = { id: socket.id, user_id: data.userId }
-		onlineUser.push(user)
-		console.log('authenUser', socket.id)
-		console.log(onlineUser)
+		if (typeof data === 'string') {
+			var object = JSON.parse(data)
+			const user = { id: socket.id, user_id: object.userId }
+			onlineUser.push(user)
+			console.log('authenUser', socket.id)
+			console.log(onlineUser)
+		}
 	})
 	socket.on('notify', (data) => {
 		if (typeof data === 'string') {
 			var object = JSON.parse(data)
-			console.log(object.followerList)
+			// console.log(object.followerList)
 			for (var i in object.followerList) {
 				var user = onlineUser.find(id => id.user_id === object.followerList[i])
-				socket.to(user.id).emit('notify', (new Date()))
-				console.log(new Date())
+				if (user !== 'undefined') {
+					console.log('notify user ', user)
+					socket.to(user.id).emit('notify', (new Date()))
+					// console.log(new Date())
+				}
 			}
 		}
 	})
