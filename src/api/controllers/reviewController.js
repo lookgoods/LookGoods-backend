@@ -613,45 +613,14 @@ export default {
 	searchProductName: (req, res) => Product.aggregate([
 		{
 			$project: {
-				index: {
-					$cond: [
-						{
-							$gte: [ {$indexOfCP: [
-								{
-									$toLower: '$name'
-								},
-								{
-									$toLower: req.body.key
-								}
-							]}, 0 ]
-						}, {$indexOfCP: [
-							{
-								$toLower: '$name'
-							},
-							{
-								$toLower: req.body.key
-							}
-						]}, {$cond: [
-							{
-								$gte: [ {$indexOfCP: [
-									{
-										$toLower: '$brand'
-									},
-									{
-										$toLower: req.body.key
-									}
-								]}, 0 ]
-							}, {$indexOfCP: [
-								{
-									$toLower: '$brand'
-								},
-								{
-									$toLower: req.body.key
-								}
-							]}, -1
-						]}
-					]
-				}
+				index: {$indexOfCP: [
+					{
+						$toLower: '$name'
+					},
+					{
+						$toLower: req.body.key
+					}
+				]}
 			}
 		},
 		{
