@@ -333,7 +333,7 @@ export default {
 		}),
 
 	getCurrentUserNotification: (req, res) => User.find({ _id: req.session.user_id })
-		.populate('notification.item', 'title picture_cover_url')
+		.populate('notification.item', 'title picture_cover_url timestamp')
 		.populate('notification.user', 'name picture_url')
 		.lean().exec((err, currentUser) => {
 			if (err) res.send(err)
