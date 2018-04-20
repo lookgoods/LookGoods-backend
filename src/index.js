@@ -49,7 +49,7 @@ io.on('connection', (socket) => {
 			var object = JSON.parse(data)
 			for (var i in object.followerList) {
 				var user = onlineUser.find(id => id.user_id === object.followerList[i])
-				if (user !== 'undefined') {
+				if (user !== undefined) {
 					console.log('notify user ', user)
 					socket.to(user.id).emit('notify', (new Date()))
 				}
