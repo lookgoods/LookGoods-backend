@@ -632,6 +632,9 @@ export default {
 			$sort: {
 				index: 1
 			}
+		},
+		{
+			$limit: 5
 		}
 	])
 		.exec((err, product) => {
@@ -639,76 +642,6 @@ export default {
 			Product.find({ _id: { $in: product } })
 				.select('name brand')
 				.exec((err, popObject) => {
-					if (err) res.send(err)
-					res.send(popObject)
-				})
-		}),
-
-	searchPageProductName: (req, res) => Product.aggregate([
-		{
-			$project: {
-				index: {
-					$cond: [
-						{
-							$gte: [ {$indexOfCP: [
-								{
-									$toLower: '$name'
-								},
-								{
-									$toLower: req.body.key
-								}
-							]}, 0 ]
-						}, {$indexOfCP: [
-							{
-								$toLower: '$name'
-							},
-							{
-								$toLower: req.body.key
-							}
-						]}, {$cond: [
-							{
-								$gte: [ {$indexOfCP: [
-									{
-										$toLower: '$brand'
-									},
-									{
-										$toLower: req.body.key
-									}
-								]}, 0 ]
-							}, {$indexOfCP: [
-								{
-									$toLower: '$brand'
-								},
-								{
-									$toLower: req.body.key
-								}
-							]}, -1
-						]}
-					]
-				}
-			}
-		},
-		{
-			$match: {
-				index: { $gte: 0 }
-			}
-		},
-		{
-			$sort: {
-				index: 1
-			}
-		}
-	])
-		.exec((err, product) => {
-			if (err) res.send(err)
-			Product.paginate(
-				{
-					_id: { $in: product }
-				}, {
-					page: req.params.pid,
-					limit: parseInt(req.params.psize, 10),
-					select: 'name brand'
-				}, (err, popObject) => {
 					if (err) res.send(err)
 					res.send(popObject)
 				})
