@@ -348,38 +348,6 @@ export default {
 		}, (err, deleted) => {
 			if (err) res.send(err)
 			res.send(deleted)
-		}),
-
-	searchUser: (req, res) => User.aggregate([
-		{
-			$project: {
-				index: {
-					$indexOfCP: [
-						{
-							$toLower: '$name'
-						},
-						req.body.key
-					]
-				}
-			}
-		},
-		{
-			$match: {
-				index: { $gte: 0 }
-			}
-		},
-		{
-			$sort: {
-				index: 1
-			}
-		}
-	])
-		.exec((err, user) => {
-			if (err) res.send(err)
-			User.populate(user, {path: '_id', select: 'name picture_url'}, (err, popObject) => {
-				if (err) res.send(err)
-				res.send(user)
-			})
 		})
 
 }

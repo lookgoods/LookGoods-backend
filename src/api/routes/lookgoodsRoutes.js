@@ -3,6 +3,7 @@ import Passport from '../models/auth'
 import ReviewController from '../controllers/reviewController'
 import User from '../models/userModel'
 import UserController from '../controllers/userController'
+import SearchController from '../controllers/searchController'
 import { sendUploadToGCS } from 'api/controllers/uploadController'
 import Multer from 'multer'
 
@@ -128,22 +129,21 @@ export default app => {
 		.delete(CommentController.deleteComment)
 
 	app.route('/search/users')
-		.post(UserController.searchUser)
+		.post(SearchController.searchUser)
+	app.route('/search/users/:pid/:psize')
+		.post(SearchController.searchPageUser)
 	app.route('/search/reviews/tag')
-		.post(ReviewController.searchReviewByTag)
+		.post(SearchController.searchReviewByTag)
 	app.route('/search/reviews/tag/pages/:pid/:psize')
-		.post(ReviewController.searchPageReviewByTag)
+		.post(SearchController.searchPageReviewByTag)
 	app.route('/search/reviews')
-		.post(ReviewController.searchReviewByTitle)
+		.post(SearchController.searchReviewByTitle)
 	app.route('/search/reviews/pages/:pid/:psize')
-		.post(ReviewController.searchPageReviewByTitle)
+		.post(SearchController.searchPageReviewByTitle)
 	app.route('/search/reviews/products')
-		.post(ReviewController.searchReviewByProduct)
+		.post(SearchController.searchReviewByProduct)
 	app.route('/search/reviews/products/pages/:pid/:psize')
-		.post(ReviewController.searchPageReviewByProduct)
-
+		.post(SearchController.searchPageReviewByProduct)
 	app.route('/search/products')
-		.post(ReviewController.searchProductName)
-	app.route('/search/products/pages/:pid/:psize')
-		.post(ReviewController.searchPageProductName)
+		.post(SearchController.searchProductName)
 }
