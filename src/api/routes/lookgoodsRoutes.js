@@ -4,6 +4,8 @@ import ReviewController from '../controllers/reviewController'
 import User from '../models/userModel'
 import UserController from '../controllers/userController'
 import SearchController from '../controllers/searchController'
+import FollowController from '../controllers/followController'
+import NotificationController from '../controllers/notificationController'
 import { sendUploadToGCS } from 'api/controllers/uploadController'
 import Multer from 'multer'
 
@@ -45,10 +47,6 @@ export default app => {
 		.get(UserController.getCurrentUserSavePostList)
 	app.route('/currentuser/savepostlist/pages/:pid/:psize')
 		.get(UserController.getPageCurrentUserSavePostList)
-	app.route('/currentuser/follow/users/:id')
-		.put(UserController.followUser)
-	app.route('/currentuser/unfollow/users/:id')
-		.put(UserController.unfollowUser)
 	app.route('/currentuser/follower')
 		.get(UserController.getCurrentUserFollower)
 	app.route('/currentuser/follower/pages/:pid/:psize')
@@ -57,18 +55,28 @@ export default app => {
 		.get(UserController.getCurrentUserFollowing)
 	app.route('/currentuser/following/pages/:pid/:psize')
 		.get(UserController.getPageCurrentUserFollower)
-	app.route('/currentuser/following/reviews')
-		.get(ReviewController.getCurrentUserFollowingReview)
-	app.route('/currentuser/following/reviews/pages/:pid/:psize')
-		.get(ReviewController.getPageCurrentUserFollowingReview)
 	app.route('/currentuser/comments')
 		.get(UserController.getCurrentUserCommentList)
 	app.route('/currentuser/comments/pages/:pid/:psize')
 		.get(UserController.getPageCurrentUserCommentList)
+
 	app.route('/currentuser/notifications')
-		.get(UserController.getCurrentUserNotification)
+		.get(NotificationController.getCurrentUserNotification)
 	app.route('/currentuser/notifications/:id')
-		.delete(UserController.deleteCurrentUserNotificaion)
+		.delete(NotificationController.deleteCurrentUserNotificaion)
+
+	app.route('/currentuser/follow/users/:id')
+		.put(FollowController.followUser)
+	app.route('/currentuser/unfollow/users/:id')
+		.put(FollowController.unfollowUser)
+	app.route('/currentuser/following/reviews')
+		.get(FollowController.getCurrentUserFollowingReview)
+	app.route('/currentuser/following/reviews/pages/:pid/:psize')
+		.get(FollowController.getPageCurrentUserFollowingReview)
+	app.route('/users/:id/following/reviews')
+		.get(FollowController.getUserFollowingReview)
+	app.route('/users/:id/following/reviews/pages/:pid/:psize')
+		.get(FollowController.getPageUserFollowingReview)
 
 	app.route('/users/:id')
 		.get(UserController.getUser)
@@ -88,10 +96,6 @@ export default app => {
 		.get(UserController.getUserFollowing)
 	app.route('/users/:id/following/pages/:pid/:psize')
 		.get(UserController.getPageUserFollowing)
-	app.route('/users/:id/following/reviews')
-		.get(ReviewController.getUserFollowingReview)
-	app.route('/users/:id/following/reviews/pages/:pid/:psize')
-		.get(ReviewController.getPageUserFollowingReview)
 	app.route('/users/:id/comments')
 		.get(UserController.getUserCommentList)
 	app.route('/users/:id/comments/pages/:pid/:psize')
@@ -112,7 +116,6 @@ export default app => {
 		.put(ReviewController.saveReview)
 	app.route('/reviews/:id/unsave')
 		.put(ReviewController.unSaveReview)
-
 	app.route('/reviews/:id/like')
 		.put(ReviewController.likeReview)
 	app.route('/reviews/:id/unlike')
