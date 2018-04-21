@@ -17,5 +17,16 @@ export default{
 		}, (err, deleted) => {
 			if (err) res.send(err)
 			res.send(deleted)
-		})
+		}),
+
+	updateNotification: (req, res) => User.update(
+		{
+			_id: req.session.user_id
+		}, {
+			seen: req.body.seen
+		}, (err, updated) => {
+			if (err) res.send(err)
+			res.send(updated)
+		}
+	)
 }

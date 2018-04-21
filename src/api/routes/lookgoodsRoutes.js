@@ -62,6 +62,7 @@ export default app => {
 
 	app.route('/currentuser/notifications')
 		.get(NotificationController.getCurrentUserNotification)
+		.put(NotificationController.updateNotification)
 	app.route('/currentuser/notifications/:id')
 		.delete(NotificationController.deleteCurrentUserNotificaion)
 

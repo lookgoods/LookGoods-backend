@@ -17,6 +17,7 @@ const UserSchema = new Schema({
 	own_post_list: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
 	comment_list: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
 	notification: [subNotification],
+	seen: { type: Number, default: 0 },
 	description: String
 })
 
