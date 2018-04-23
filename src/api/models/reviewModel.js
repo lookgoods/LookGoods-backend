@@ -14,7 +14,8 @@ const ReviewSchema = new Schema({
 	rating: Number,
 	timestamp: { type: Date, default: Date.now },
 	available: Boolean,
-	tag: [{ type: String }]
+	tag: [{ type: String }],
+	chat_list: [{ type: Schema.Types.ObjectId, ref: 'Chat' }]
 
 })
 

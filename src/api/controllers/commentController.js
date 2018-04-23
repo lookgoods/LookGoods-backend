@@ -82,34 +82,27 @@ export default {
 		{
 			_id: req.params.cid,
 			user: req.session.user_id
-		}, (err, comment) => {
-			if (err) res.send(err)
-			if (comment.length === 0) {
-				res.send(comment)
-			} else {
-				Review.update(
+		}
+	).remove().exec((err, comment) => {
+		if (err) res.send(err)
+		Review.update(
+			{
+				_id: req.params.id
+			}, {
+				$pull: { comment_list: req.params.cid }
+			}, (err, updatedReview) => {
+				if (err) res.send(err)
+				User.update(
 					{
-						_id: req.params.id
+						_id: req.session.user_id
 					}, {
 						$pull: { comment_list: req.params.cid }
-					}, (err, updatedReview) => {
+					}, (err, updateUser) => {
 						if (err) res.send(err)
-						User.update(
-							{
-								_id: req.session.user_id
-							}, {
-								$pull: { comment_list: req.params.cid }
-							}, (err, updateUser) => {
-								if (err) res.send(err)
-								Comment.remove({ _id: req.params.cid }, (err, updated) => {
-									if (err) res.send(err)
-									res.send(updated)
-								})
-							}
-						)
+						res.send(updateUser)
 					}
 				)
 			}
-		}
-	)
+		)
+	})
 }

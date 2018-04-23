@@ -13,7 +13,7 @@ export default{
 		{
 			_id: req.session.user_id
 		}, {
-			$pull: {notification: {item: req.params.id}}
+			$pull: { notification: { _id: req.params.id } }
 		}, (err, deleted) => {
 			if (err) res.send(err)
 			res.send(deleted)

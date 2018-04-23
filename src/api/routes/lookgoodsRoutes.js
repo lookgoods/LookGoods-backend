@@ -6,6 +6,7 @@ import UserController from '../controllers/userController'
 import SearchController from '../controllers/searchController'
 import FollowController from '../controllers/followController'
 import NotificationController from '../controllers/notificationController'
+import ChatController from '../controllers/chatController'
 import { sendUploadToGCS } from 'api/controllers/uploadController'
 import Multer from 'multer'
 
@@ -127,10 +128,18 @@ export default app => {
 		.post(CommentController.createComment)
 	app.route('/reviews/:id/comments/pages/:pid/:psize')
 		.get(CommentController.getPageReviewCommentList)
-
 	app.route('/reviews/:id/comments/:cid')
 		.put(CommentController.editComment)
 		.delete(CommentController.deleteComment)
+
+	app.route('/reviews/:id/chats')
+		.get(ChatController.getReviewChatList)
+		.post(ChatController.createChat)
+	app.route('/reviews/:id/chats/pages/:pid/:psize')
+		.get(ChatController.getPageReviewChatList)
+	app.route('/reviews/:id/chats/:cid')
+		.put(ChatController.editChat)
+		.delete(ChatController.deleteChat)
 
 	app.route('/search/users')
 		.post(SearchController.searchUser)

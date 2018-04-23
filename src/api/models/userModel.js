@@ -5,7 +5,7 @@ const subNotification = new Schema({
 	user: { type: Schema.Types.ObjectId, ref: 'User' },
 	type: String,
 	item: { type: Schema.Types.ObjectId, ref: 'Review' }
-}, { _id: false })
+})
 
 const UserSchema = new Schema({
 	client_id: String,
