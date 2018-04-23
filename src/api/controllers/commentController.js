@@ -30,7 +30,8 @@ export default {
 								{
 									following_list: req.session.user_id
 								}, {
-									$push: { notification: { user: req.session.user_id, type: 'Comment', item: req.params.id } }
+									$push: { notification: { user: req.session.user_id, type: 'Comment', item: req.params.id } },
+									$inc: { unread: 1 }
 								}, { multi: true }, (err, notificationUpdated) => {
 									if (err) res.send(err)
 									res.send(comment)

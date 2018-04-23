@@ -69,7 +69,8 @@ export default {
 									{
 										following_list: req.session.user_id
 									}, {
-										$push: { notification: { user: req.session.user_id, type: 'Review', item: review._id } }
+										$push: { notification: { user: req.session.user_id, type: 'Review', item: review._id } },
+										$inc: { unread: 1 }
 									}, { multi: true }, (err, userUpdated) => {
 										if (err) res.send(err)
 										res.send(review)
@@ -105,7 +106,8 @@ export default {
 								{
 									following_list: req.session.user_id
 								}, {
-									$push: { notification: { user: req.session.user_id, type: 'Review', item: review._id } }
+									$push: { notification: { user: req.session.user_id, type: 'Review', item: review._id } },
+									$inc: { unread: 1 }
 								}, { multi: true }, (err, userUpdated) => {
 									if (err) res.send(err)
 									res.json(review)

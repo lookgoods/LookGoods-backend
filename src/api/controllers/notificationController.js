@@ -23,7 +23,7 @@ export default{
 		{
 			_id: req.session.user_id
 		}, {
-			seen: req.body.seen
+			unread: 0
 		}, (err, updated) => {
 			if (err) res.send(err)
 			res.send(updated)
