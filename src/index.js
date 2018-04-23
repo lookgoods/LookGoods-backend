@@ -26,6 +26,7 @@ const server = Http.createServer(app)
 const io = Socket(server)
 
 const onlineUser = []
+
 io.on('connection', (socket) => {
 	// console.log('user connected ', socket.id)
 	socket.on('disconnect', () => {
@@ -38,10 +39,10 @@ io.on('connection', (socket) => {
 	socket.on('authenUser', (data) => {
 		if (typeof data === 'string') {
 			var object = JSON.parse(data)
-			const user = { id: socket.id, user_id: object.userId }
-			onlineUser.push(user)
-			console.log('authenUser', socket.id)
-			console.log(onlineUser)
+			var user = { id: socket.id, user_id: object.userId }
+			if (onlineUser.find(i => i.id === socket.id) === undefined) {
+				onlineUser.push(user)
+			}
 		}
 	})
 	socket.on('notify', (data) => {
