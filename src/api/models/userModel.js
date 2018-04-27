@@ -4,7 +4,8 @@ import MongoosePaginate from 'mongoose-paginate'
 const subNotification = new Schema({
 	user: { type: Schema.Types.ObjectId, ref: 'User' },
 	type: String,
-	item: { type: Schema.Types.ObjectId, ref: 'Review' }
+	item: { type: Schema.Types.ObjectId, ref: 'Review' },
+	timestamp: { type: Date, default: Date.now }
 })
 
 const UserSchema = new Schema({
