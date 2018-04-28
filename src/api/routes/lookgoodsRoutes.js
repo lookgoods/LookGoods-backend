@@ -143,7 +143,7 @@ export default app => {
 
 	app.route('/search/users')
 		.post(SearchController.searchUser)
-	app.route('/search/users/:pid/:psize')
+	app.route('/search/users/pages/:pid/:psize')
 		.post(SearchController.searchPageUser)
 	app.route('/search/reviews/tag')
 		.post(SearchController.searchReviewByTag)
