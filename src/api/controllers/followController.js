@@ -79,6 +79,7 @@ export default {
 				})
 				.populate('user', 'name picture_url')
 				.populate('product')
+				.sort({timestamp: -1})
 				.lean().exec((err, reviewList) => {
 					if (err) res.send(err)
 					res.json(reviewList)
@@ -99,7 +100,8 @@ export default {
 				{
 					page: req.params.pid,
 					limit: parseInt(req.params.psize, 10),
-					populate: [{path: 'user', select: 'name picture_url'}, 'product']
+					populate: [{path: 'user', select: 'name picture_url'}, 'product'],
+					sort: {timestamp: -1}
 				}, (err, review) => {
 					if (err) res.send(err)
 					res.send(review)
@@ -119,6 +121,7 @@ export default {
 				})
 				.populate('user', 'name picture_url')
 				.populate('product')
+				.sort({timestamp: -1})
 				.lean().exec((err, reviewList) => {
 					if (err) res.send(err)
 					res.json(reviewList)
@@ -139,7 +142,8 @@ export default {
 				{
 					page: req.params.pid,
 					limit: parseInt(req.params.psize, 10),
-					populate: [{path: 'user', select: 'name picture_url'}, 'product']
+					populate: [{path: 'user', select: 'name picture_url'}, 'product'],
+					sort: {timestamp: -1}
 				}, (err, review) => {
 					if (err) res.send(err)
 					res.send(review)
