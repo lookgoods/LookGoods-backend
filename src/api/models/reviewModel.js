@@ -1,5 +1,6 @@
 import Mongoose, { Schema } from 'mongoose'
 import MongoosePaginate from 'mongoose-paginate'
+import MongooseAggregatePaginate from 'mongoose-aggregate-paginate'
 
 const ReviewSchema = new Schema({
 	title: { type: String },
@@ -20,6 +21,7 @@ const ReviewSchema = new Schema({
 })
 
 ReviewSchema.plugin(MongoosePaginate)
+ReviewSchema.plugin(MongooseAggregatePaginate)
 ReviewSchema.index(
 	{
 		title: 1,

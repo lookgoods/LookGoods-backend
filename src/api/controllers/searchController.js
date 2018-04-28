@@ -160,7 +160,8 @@ export default{
 							}
 						]}
 					]
-				}
+				},
+				timestamp: 1
 			}
 		},
 		{
@@ -170,7 +171,8 @@ export default{
 		},
 		{
 			$sort: {
-				index: 1
+				index: 1,
+				timestamp: -1
 			}
 		}
 	])
@@ -185,51 +187,62 @@ export default{
 				})
 		}),
 
-	searchPageReviewByTitle: (req, res) => Review.aggregate([
-		{
-			$project: {
-				index: {
-					$cond: [
-						{
-							$in: [{$toLower: req.body.key}, '$tag']
-						}, 1, {$indexOfCP: [
+	searchPageReviewByTitle: (req, res) => {
+		var aggreate = Review.aggregate([
+			{
+				$project: {
+					index: {
+						$cond: [
 							{
-								$toLower: '$title'
-							},
-							{
-								$toLower: req.body.key
-							}
-						]}
-					]
+								$in: [{$toLower: req.body.key}, '$tag']
+							}, 1, {$indexOfCP: [
+								{
+									$toLower: '$title'
+								},
+								{
+									$toLower: req.body.key
+								}
+							]}
+						]
+					},
+					timestamp: 1
+				}
+			},
+			{
+				$match: {
+					index: { $gte: 0 }
+				}
+			},
+			{
+				$sort: {
+					index: 1,
+					timestamp: -1
 				}
 			}
-		},
-		{
-			$match: {
-				index: { $gte: 0 }
-			}
-		},
-		{
-			$sort: {
-				index: 1
-			}
-		}
-	])
-		.exec((err, review) => {
-			if (err) res.send(err)
-			Review.paginate(
-				{
-					_id: { $in: review }
-				},
-				{
-					page: req.params.pid,
-					limit: parseInt(req.params.psize, 10),
-					populate: [{path: 'user', select: 'name picture_url'}, {path: 'product'}]
-				}, (err, popObject) => {
-					if (err) res.send(err)
-					res.send(popObject)
-				})
-		}),
+		])
+		Review.aggregatePaginate(
+			aggreate,
+			{
+				page: req.params.pid,
+				limit: parseInt(req.params.psize, 10)
+			}, (err, results, pageCount, count) => {
+				if (err) res.send(err)
+				Review.populate(results,
+					{path: '_id',
+						populate: [{path: 'user', select: 'name picture_url'},
+							{path: 'product'}]}, (err, popObject) => {
+						if (err) res.send(err)
+						var docInfo = {
+							docs: popObject,
+							total: count,
+							limit: req.params.psize,
+							page: req.params.pid,
+							pages: pageCount
+						}
+						res.send(docInfo)
+					})
+			})
+	},
 
 	searchReviewByProduct: (req, res) => Product.aggregate([
 		{
@@ -291,6 +304,7 @@ export default{
 			Review.find({ product: { $in: product } })
 				.populate('user', 'name picture_url')
 				.populate('product')
+				.sort({timestamp: -1})
 				.exec((err, popObject) => {
 					if (err) res.send(err)
 					res.send(popObject)
@@ -338,7 +352,8 @@ export default{
 							]}, -1
 						]}
 					]
-				}
+				},
+				timestamp: 1
 			}
 		},
 		{
@@ -348,7 +363,8 @@ export default{
 		},
 		{
 			$sort: {
-				index: 1
+				index: 1,
+				timestamp: -1
 			}
 		}
 	])
@@ -361,7 +377,8 @@ export default{
 				{
 					page: req.params.pid,
 					limit: parseInt(req.params.psize, 10),
-					populate: [{path: 'user', select: 'name picture_url'}, 'product']
+					populate: [{path: 'user', select: 'name picture_url'}, 'product'],
+					sort: {timestamp: -1}
 				}, (err, popObject) => {
 					if (err) res.send(err)
 					res.send(popObject)

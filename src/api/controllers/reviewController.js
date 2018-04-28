@@ -5,6 +5,7 @@ import User from '../models/userModel'
 export default {
 
 	getReviewList: (req, res) => Review.find({ available: true })
+		.sort({timestamp: -1})
 		.populate('user', 'name picture_url')
 		.populate('product')
 		.lean().exec((err, review) => {
@@ -16,7 +17,8 @@ export default {
 		{
 			page: req.params.pid,
 			limit: parseInt(req.params.psize, 10),
-			populate: [{path: 'user', select: 'name picture_url'}, 'product']
+			populate: [{path: 'user', select: 'name picture_url'}, 'product'],
+			sort: {timestamp: -1}
 		}, (err, reviewList) => {
 			if (err) res.send(err)
 			res.json(reviewList)
