@@ -64,8 +64,10 @@ export default app => {
 	app.route('/currentuser/notifications')
 		.get(NotificationController.getCurrentUserNotification)
 		.put(NotificationController.updateNotification)
+		.delete(NotificationController.clearNotification)
 	app.route('/currentuser/notifications/:id')
 		.delete(NotificationController.deleteCurrentUserNotificaion)
+		.put(NotificationController.readNotification)
 
 	app.route('/currentuser/follow/users/:id')
 		.put(FollowController.followUser)

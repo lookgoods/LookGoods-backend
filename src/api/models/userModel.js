@@ -5,7 +5,8 @@ const subNotification = new Schema({
 	user: { type: Schema.Types.ObjectId, ref: 'User' },
 	type: String,
 	item: { type: Schema.Types.ObjectId, ref: 'Review' },
-	timestamp: { type: Date, default: Date.now }
+	timestamp: { type: Date, default: Date.now },
+	read: { type: Boolean, default: false }
 })
 
 const UserSchema = new Schema({

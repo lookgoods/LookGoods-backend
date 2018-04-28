@@ -27,6 +27,27 @@ export default{
 		}, (err, updated) => {
 			if (err) res.send(err)
 			res.send(updated)
+		}),
+
+	readNotification: (req, res) => User.update(
+		{
+			_id: req.session.user_id,
+			'notification._id': req.params.id
+		}, {
+			$set: { 'notification.$.read': true }
+		}, (err, updated) => {
+			if (err) res.send(err)
+			res.send(updated)
+		}),
+
+	clearNotification: (req, res) => User.update(
+		{
+			_id: req.session.user_id
+		}, {
+			$set: { notification: [] }
+		}, (err, clear) => {
+			if (err) res.send(err)
+			res.send(clear)
 		}
 	)
 }
